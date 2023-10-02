@@ -1,7 +1,7 @@
 From aab7ed4a0840fb1732315914fb77633780727390 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:15 -0400
-Subject: [PATCH 2/4] Improve floating toolbar usability and appearance
+Subject: [PATCH 2/5] Improve floating toolbar usability and appearance
 
 
 diff --git a/res/values/colors.xml b/res/values/colors.xml

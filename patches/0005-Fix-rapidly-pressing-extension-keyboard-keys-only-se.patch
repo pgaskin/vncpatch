@@ -1,0 +1,26 @@
+From f8e2786caf4898fda95fe83ee9c78ab99833d946 Mon Sep 17 00:00:00 2001
+From: Patrick Gaskin <patrick@pgaskin.net>
+Date: Sun, 1 Oct 2023 23:05:41 -0400
+Subject: [PATCH 5/5] Fix rapidly pressing extension keyboard keys only sending
+ half
+
+The existing logic handles double-taps separately. It used to send a
+single keypress if the key isn't a lockable modifier, but this is
+obviously buggy since a double-tap is actually two presses.
+
+diff --git a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
+index 8c79756..7affc44 100644
+--- a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
++++ b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
+@@ -194,6 +194,11 @@
+ 
+     if-eq v0, v1, :cond_0
+ 
++    # key is not lockable (e == 0), so send the second tap (note that this
++    # method is the double tap handler, and n is the single tap handler) instead
++    # of just ignoring it
++    invoke-virtual {p0}, Lcom/realvnc/viewer/android/ui/KeyboardKey;->n()V
++
+     goto :goto_0
+ 
+     .line 2

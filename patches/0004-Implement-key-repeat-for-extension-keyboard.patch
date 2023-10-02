@@ -1,16 +1,35 @@
-From f183b24af2f75ca372f708a596e5bb8a92c8b708 Mon Sep 17 00:00:00 2001
+From 8756f03505e3f1637455bf59511564908af30473 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
-Date: Sun, 1 Oct 2023 22:36:05 -0400
-Subject: [PATCH 4/4] Implement key repeat for extension keyboard
+Date: Sun, 1 Oct 2023 23:05:33 -0400
+Subject: [PATCH 4/5] Implement key repeat for extension keyboard
+
+Allows keys to be long-pressed (typically 500ms) to start repeating
+them at 75ms. Doesn't apply to modifier keys.
 
 The way I did this is somewhat ugly and breaks encapsulation, but
 it's the simplest way to do it in a mostly-additive way to keep this
 maintainable.
 
 diff --git a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
-index b76a77b..6853355 100644
+index b76a77b..8c79756 100644
 --- a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 +++ b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
+@@ -4,13 +4,13 @@
+ 
+ 
+ # instance fields
+-.field private a:I
++.field private a:I # key state (up=0, down=1, locked=2)
+ 
+ .field private b:Ll3/u;
+ 
+ .field private d:Ll3/t;
+ 
+-.field private e:I
++.field private e:I # whether key can be locked (no=0, 1=yes)
+ 
+ .field private f:Landroid/view/GestureDetector;
+ 
 @@ -668,6 +668,8 @@
  
      invoke-virtual {v0, v1, v2, v3}, Lj3/f;->b(Ljava/lang/Runnable;J)V
@@ -76,7 +95,7 @@ index 0000000..433979f
 +    return-void
 +.end method
 diff --git a/smali/l3/s.smali b/smali/l3/s.smali
-index 6fcea9f..1d0f576 100644
+index 6fcea9f..12d22f3 100644
 --- a/smali/l3/s.smali
 +++ b/smali/l3/s.smali
 @@ -5,24 +5,41 @@
@@ -123,7 +142,7 @@ index 6fcea9f..1d0f576 100644
      return-void
  .end method
  
-@@ -57,3 +74,23 @@
+@@ -57,3 +74,30 @@
  
      return p0
  .end method
@@ -131,6 +150,13 @@ index 6fcea9f..1d0f576 100644
 +.method public final onLongPress(Landroid/view/MotionEvent;)V
 +    .locals 2
 +
++    iget-object v0, p0, Ll3/s;->a:Lcom/realvnc/viewer/android/ui/KeyboardKey;
++    invoke-virtual {v0}, Lcom/realvnc/viewer/android/ui/KeyboardKey;->f()I # getter for KeyboardKey.e (which is 1 if key can be locked down)
++    move-result v0
++    if-eqz v0, :repeat # if key can't be locked (i.e., is not a modifier), start repeating
++    return-void
++
++    :repeat
 +    iget-object v0, p0, Ll3/s;->keyRepeatHandler:Landroid/os/Handler;
 +    iget-object v1, p0, Ll3/s;->keyRepeatRunnable:Ll3/s$KeyRepeatRunnable;
 +    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
