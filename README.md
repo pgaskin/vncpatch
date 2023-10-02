@@ -11,6 +11,7 @@ For VNC Viewer 3.x, see [here](https://gist.github.com/pgaskin/fe3bd93d851f5ac63
 - Make the floating toolbar larger (to improve usability of the invisible FAB).
 - Make the floating toolbar background translucent white (so the blue buttons aren't unreadable).
 - Add a pin-to-home button to the connection details toolbar (since the dynamic shortcuts only includes the first four connections).
+- Add long-press key-repeat support to the extension keyboard (so pressing arrow keys isn't as painful).
 
 ## Usage
 
