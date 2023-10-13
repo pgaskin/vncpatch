@@ -1,8 +1,13 @@
-From aab7ed4a0840fb1732315914fb77633780727390 Mon Sep 17 00:00:00 2001
+From 97581af7cb3f2cb89e72a1914e90e04bc605e583 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:15 -0400
 Subject: [PATCH 2/5] Improve floating toolbar usability and appearance
 
+Updating:
+- Update the resources.
+- Find the method setting the opacity of an ImageButton (i.e., the FAB) (try: ag '0x3f800000' -C5 | ag '0x3f000000' | ag 'const/high16')
+- Test to ensure the toolbar is translucent white.
+- Test to ensure the toolbar and FAB are larger.
 
 diff --git a/res/values/colors.xml b/res/values/colors.xml
 index 5dc714e..2432068 100644
@@ -30,10 +35,10 @@ index 2bb36cc..94da473 100644
      <item type="dimen" name="toolbar_layout_height">@dimen/toolbar_fab_layout_size</item>
      <dimen name="toolbar_layout_width">260.0dip</dimen>
      <dimen name="toolbar_topshadow_height">2.0dip</dimen>
-diff --git a/smali/q3/i.smali b/smali/q3/i.smali
-index c6fd1d2..01f97da 100644
---- a/smali/q3/i.smali
-+++ b/smali/q3/i.smali
+diff --git a/smali/r3/h.smali b/smali/r3/h.smali
+index a8e9db6..0fb264f 100644
+--- a/smali/r3/h.smali
++++ b/smali/r3/h.smali
 @@ -206,7 +206,7 @@
  
      const/high16 v1, 0x3f800000    # 1.0f

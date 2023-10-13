@@ -1,15 +1,18 @@
-From 0a8cc34065b8e4b18f9c52d802bbbd6cc86f13c9 Mon Sep 17 00:00:00 2001
+From 2bd9fb1a97e544c381f0e0ca77eda4391eb3268d Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:07 -0400
 Subject: [PATCH 1/5] Make floating toolbar collapsed fab invisible unless
  closed
 
+Updating:
+- Find the obsfucated file with the setAlpha for the FAB (try: ag '0x3f000000' -C15 | ag setAlpha).
+- Test to ensure that the FAB behaves correctly.
 
-diff --git a/smali/m3/j.smali b/smali/m3/j.smali
-index b1bdf51..f8c0e02 100644
---- a/smali/m3/j.smali
-+++ b/smali/m3/j.smali
-@@ -767,12 +767,12 @@
+diff --git a/smali/n3/k.smali b/smali/n3/k.smali
+index 567cad9..e1bbeb8 100644
+--- a/smali/n3/k.smali
++++ b/smali/n3/k.smali
+@@ -765,12 +765,12 @@
  
      if-eqz v0, :cond_1
  

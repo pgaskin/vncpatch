@@ -1,4 +1,4 @@
-From f8e2786caf4898fda95fe83ee9c78ab99833d946 Mon Sep 17 00:00:00 2001
+From 29b055dd1056935be6c2df6de769b906516a1568 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 23:05:41 -0400
 Subject: [PATCH 5/5] Fix rapidly pressing extension keyboard keys only sending
@@ -8,8 +8,12 @@ The existing logic handles double-taps separately. It used to send a
 single keypress if the key isn't a lockable modifier, but this is
 obviously buggy since a double-tap is actually two presses.
 
+Updating:
+- Diff the KeyboardKey class to ensure the method names are up-to-date.
+- Test to ensure rapidly pressing extension keys works correctly.
+
 diff --git a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
-index 8c79756..7affc44 100644
+index 0a5cf0f..164ee1e 100644
 --- a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 +++ b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 @@ -194,6 +194,11 @@

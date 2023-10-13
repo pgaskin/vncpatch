@@ -1,4 +1,4 @@
-From 1a9b815e5cedbff33457a72f37edd4386230625d Mon Sep 17 00:00:00 2001
+From 22eb8077ad2ad1ced8d8038af0175f553a84c9d9 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:21 -0400
 Subject: [PATCH 3/5] Add pin-to-home button to connection details page
@@ -7,8 +7,16 @@ The dynamic app shortcuts list only shows the same 4 connections, and
 it's not even frequency-based due to the way it gets rebuilt, so it's
 kind of useless if you have more than 4 connections.
 
+Updating:
+- Add the resources.
+- Find the onOptionsItemSelected method for the details toolbar (try: ag onOptionsItemSelected -C15 | ag finish).
+- Find the connection info class (it's used many times in the file), and diff it with the old one to ensure the method names are up-to-date.
+- Test to ensure add-to-home works.
+- Test to ensure shortcuts update when changing the name.
+- Test to ensure shortcuts open the correct connection.
+
 diff --git a/res/menu/summary.xml b/res/menu/summary.xml
-index 9d54522..f92ba3b 100644
+index 9d54522..ad0629b 100644
 --- a/res/menu/summary.xml
 +++ b/res/menu/summary.xml
 @@ -1,6 +1,7 @@
@@ -18,13 +26,14 @@ index 9d54522..f92ba3b 100644
 +    <item android:icon="@drawable/ic_home_white_24dp" android:id="@id/menu_home" android:orderInCategory="0" android:title="@string/menu_home_add" app:showAsAction="ifRoom" />
      <item android:icon="@drawable/ic_menu_delete" android:id="@id/menu_delete_connection" android:orderInCategory="0" android:title="@string/menu_delete_connection" app:showAsAction="ifRoom" />
      <item android:icon="@drawable/ic_help_outline_white_24dp" android:id="@id/menu_help" android:orderInCategory="0" android:title="@string/menu_help" app:showAsAction="collapseActionView" />
- </menu>
+-</menu>
 \ No newline at end of file
++</menu>
 diff --git a/res/values/strings.xml b/res/values/strings.xml
-index 6dcac50..954a59b 100644
+index 1b9a155..9e332d8 100644
 --- a/res/values/strings.xml
 +++ b/res/values/strings.xml
-@@ -505,6 +505,7 @@ Your computers appear automatically; you no longer have to forward ports and con
+@@ -509,6 +509,7 @@ Your computers appear automatically; you no longer have to forward ports and con
      <string name="menu_hide_keyboard">Keyboard</string>
      <string name="menu_hide_mouse">Mouse buttons</string>
      <string name="menu_home">Home</string>
@@ -32,28 +41,28 @@ index 6dcac50..954a59b 100644
      <string name="menu_info">Info</string>
      <string name="menu_no_filter">No filter</string>
      <string name="menu_offline">Only offline devices</string>
-diff --git a/smali/com/realvnc/viewer/android/app/u5.smali b/smali/com/realvnc/viewer/android/app/u5.smali
-index aea5c19..9481563 100644
---- a/smali/com/realvnc/viewer/android/app/u5.smali
-+++ b/smali/com/realvnc/viewer/android/app/u5.smali
-@@ -1914,6 +1914,10 @@
+diff --git a/smali/com/realvnc/viewer/android/app/p5.smali b/smali/com/realvnc/viewer/android/app/p5.smali
+index 724bc9f..8a9fd40 100644
+--- a/smali/com/realvnc/viewer/android/app/p5.smali
++++ b/smali/com/realvnc/viewer/android/app/p5.smali
+@@ -2087,6 +2087,10 @@
+     const v1, 0x7f090214
  
      if-eq v0, v1, :cond_0
- 
-+    const v1, 0x7f09020d
++ 
++    const v1, 0x7f090215 # @id/menu_home
 +
 +    if-eq v0, v1, :cond_4
-+
+ 
      .line 2
      invoke-super {p0, p1}, Landroidx/fragment/app/j0;->onOptionsItemSelected(Landroid/view/MenuItem;)Z
- 
-@@ -1996,6 +2000,64 @@
-     invoke-direct {p0}, Lcom/realvnc/viewer/android/app/u5;->finish()V
+@@ -2170,6 +2174,64 @@
+     invoke-direct {p0}, Lcom/realvnc/viewer/android/app/p5;->finish()V
  
      return v2
 +
 +    :cond_4
-+    invoke-direct {p0}, Lcom/realvnc/viewer/android/app/u5;->addToHomeScreen()V
++    invoke-direct {p0}, Lcom/realvnc/viewer/android/app/p5;->addToHomeScreen()V
 +
 +    return v2
 +.end method
@@ -65,30 +74,30 @@ index aea5c19..9481563 100644
 +    move-result-object v1
 +
 +    # note that all shortcuts get rebuilt and enabled/disabled frequently by
-+    # k3.x2 (search disableShortcuts), so this should preferably match that
++    # l3.w2 (search disableShortcuts), so this should preferably match that
 +    # logic
 +
-+    iget-object v2, p0, Lcom/realvnc/viewer/android/app/u5;->b:Lk3/f;
-+    invoke-virtual {v2}, Lk3/f;->E()Ljava/lang/String; # connection uuid
++    iget-object v2, p0, Lcom/realvnc/viewer/android/app/p5;->b:Ll3/f;
++    invoke-virtual {v2}, Ll3/f;->F()Ljava/lang/String; # connection uuid
 +    move-result-object v2
 +
 +    new-instance v0, Landroid/content/pm/ShortcutInfo$Builder;
 +    invoke-direct {v0, v1, v2}, Landroid/content/pm/ShortcutInfo$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
 +
-+    iget-object v2, p0, Lcom/realvnc/viewer/android/app/u5;->b:Lk3/f;
-+    invoke-virtual {v2}, Lk3/f;->A()Ljava/lang/String; # name or url
++    iget-object v2, p0, Lcom/realvnc/viewer/android/app/p5;->b:Ll3/f;
++    invoke-virtual {v2}, Ll3/f;->B()Ljava/lang/String; # name or url
 +    move-result-object v2
 +    invoke-virtual {v0, v2}, Landroid/content/pm/ShortcutInfo$Builder;->setShortLabel(Ljava/lang/CharSequence;)Landroid/content/pm/ShortcutInfo$Builder;
 +    move-result-object v0
 +
-+    const v2, 0x7f080123 # @drawable/preview_thumb_list
++    const v2, 0x7f080124 # @drawable/preview_thumb_list
 +    invoke-static {v1, v2}, Landroid/graphics/drawable/Icon;->createWithResource(Landroid/content/Context;I)Landroid/graphics/drawable/Icon;
 +    move-result-object v2
 +    invoke-virtual {v0, v2}, Landroid/content/pm/ShortcutInfo$Builder;->setIcon(Landroid/graphics/drawable/Icon;)Landroid/content/pm/ShortcutInfo$Builder;
 +    move-result-object v0
 +
-+    iget-object v2, p0, Lcom/realvnc/viewer/android/app/u5;->b:Lk3/f;
-+    invoke-virtual {v2}, Lk3/f;->B()Landroid/net/Uri; # content://com.realvnc.viewer.android.data.AddressBook/entries/UUID
++    iget-object v2, p0, Lcom/realvnc/viewer/android/app/p5;->b:Ll3/f;
++    invoke-virtual {v2}, Ll3/f;->C()Landroid/net/Uri; # content://com.realvnc.viewer.android.data.AddressBook/entries/UUID
 +    move-result-object v2
 +    const/4 v3, 0x1 # is a shortcut
 +    const/4 v4, 0x1 # shortcut is pinned

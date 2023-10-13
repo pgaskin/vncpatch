@@ -1,8 +1,9 @@
 #!/bin/sh
 set -eu
 
-apk_default_url="https://help.realvnc.com/hc/en-us/article_attachments/12641645401885/com.realvnc.viewer.android_4.6.1.50575.apk"
-apk_default_sha="2b0af1a60ccfbf7620277621e770820d98f0e1b82ffdfa32fadf3b042948c64f"
+apk_default_name="com.realvnc.viewer.android_4.7.0.51044.apk"
+apk_default_url="https://www.apkmirror.com/apk/realvnc-limited/vnc-viewer/vnc-viewer-4-7-0-51044-release/vnc-viewer-remote-desktop-4-7-0-51044-android-apk-download/"
+apk_default_sha="62119a92fd21e34cb2cf7c4fe6147a1b06696f25e4df3610dc1a4eb13dde84dc"
 
 nosave=""
 java="java"
@@ -60,7 +61,7 @@ if [ ! -f src/.git/apksum ] || [ -n "$apk" ]; then
         if [ ! -d download ]; then
             mkdir download
         fi
-        apk="download/${apk_default_url##*/}"
+        apk="download/${apk_default_name:-${apk_default_url##*/}}"
         if [ -f "$apk" ]; then
             sha="$(sha256sum "$apk")"
             sha="${sha%% *}"
@@ -69,7 +70,15 @@ if [ ! -f src/.git/apksum ] || [ -n "$apk" ]; then
         fi
         if [ "$sha" != "$apk_default_sha" ]; then
             printf '\n\x1b[1;34m> %s\x1b[0m\n' "Downloading APK"
-            wget -O "$apk" "$apk_default_url"
+            case "$apk_default_url" in
+                "https://www.apkmirror.com/"*)
+                    echo "error: please manually download $apk_default_url to $apk and run this script again"
+                    exit 1
+                    ;;
+                *)
+                    wget -O "$apk" "$apk_default_url"
+                    ;;
+            esac
             test -f "$apk"
             sha="$(sha256sum "$apk")"
             sha="${sha%% *}"
