@@ -1,7 +1,7 @@
-From 97581af7cb3f2cb89e72a1914e90e04bc605e583 Mon Sep 17 00:00:00 2001
+From 7496bc6ee6ce9135cc89c1d3c809a02736b66f82 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:15 -0400
-Subject: [PATCH 2/5] Improve floating toolbar usability and appearance
+Subject: [PATCH 2/6] Improve floating toolbar usability and appearance
 
 Updating:
 - Update the resources.
@@ -10,10 +10,10 @@ Updating:
 - Test to ensure the toolbar and FAB are larger.
 
 diff --git a/res/values/colors.xml b/res/values/colors.xml
-index 5dc714e..2432068 100644
+index 9987630..7310a26 100644
 --- a/res/values/colors.xml
 +++ b/res/values/colors.xml
-@@ -89,7 +89,7 @@
+@@ -100,7 +100,7 @@
      <color name="foreground_material_dark">@android:color/white</color>
      <color name="foreground_material_light">@android:color/black</color>
      <color name="fragment_background">#ffeeeeee</color>
@@ -23,10 +23,10 @@ index 5dc714e..2432068 100644
      <color name="highlighted_text_material_dark">#6680cbc4</color>
      <color name="highlighted_text_material_light">#66009688</color>
 diff --git a/res/values/dimens.xml b/res/values/dimens.xml
-index 2bb36cc..94da473 100644
+index 7640ded..53e3f0a 100644
 --- a/res/values/dimens.xml
 +++ b/res/values/dimens.xml
-@@ -668,7 +668,7 @@
+@@ -858,7 +858,7 @@
      <dimen name="thumbnail_height">72.0dip</dimen>
      <dimen name="thumbnail_width">96.0dip</dimen>
      <dimen name="toolbar_dropshadow_height">4.0dip</dimen>
@@ -35,11 +35,11 @@ index 2bb36cc..94da473 100644
      <item type="dimen" name="toolbar_layout_height">@dimen/toolbar_fab_layout_size</item>
      <dimen name="toolbar_layout_width">260.0dip</dimen>
      <dimen name="toolbar_topshadow_height">2.0dip</dimen>
-diff --git a/smali/r3/h.smali b/smali/r3/h.smali
-index a8e9db6..0fb264f 100644
---- a/smali/r3/h.smali
-+++ b/smali/r3/h.smali
-@@ -206,7 +206,7 @@
+diff --git a/smali/e3/e.smali b/smali/e3/e.smali
+index 1ea8a74..90a15f1 100644
+--- a/smali/e3/e.smali
++++ b/smali/e3/e.smali
+@@ -202,7 +202,7 @@
  
      const/high16 v1, 0x3f800000    # 1.0f
  

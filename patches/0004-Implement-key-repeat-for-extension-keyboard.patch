@@ -1,7 +1,7 @@
-From e983f838514e9d78e2005741f0a7bddb2a369f2e Mon Sep 17 00:00:00 2001
+From d378567631a4cac1abf50f762253e80851e9bb16 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 23:05:33 -0400
-Subject: [PATCH 4/5] Implement key repeat for extension keyboard
+Subject: [PATCH 4/6] Implement key repeat for extension keyboard
 
 Allows keys to be long-pressed (typically 500ms) to start repeating
 them at 75ms. Doesn't apply to modifier keys.
@@ -16,7 +16,7 @@ GestureListener').
 - Test to ensure key repeat works for non-modifier keys and doesn't for modifiers.
 
 diff --git a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
-index 7bd081a..0a5cf0f 100644
+index 045c242..05a065d 100644
 --- a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 +++ b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 @@ -4,13 +4,13 @@
@@ -26,27 +26,27 @@ index 7bd081a..0a5cf0f 100644
 -.field private a:I
 +.field private a:I # key state (up=0, down=1, locked=2)
  
- .field private b:Lm3/u;
+ .field private b:Lz2/t;
  
- .field private d:Lm3/t;
+ .field private c:Lz2/s;
  
--.field private e:I
-+.field private e:I # whether key can be locked (no=0, 1=yes)
+-.field private d:I
++.field private d:I # whether key can be locked (no=0, 1=yes)
  
- .field private f:Landroid/view/GestureDetector;
+ .field private e:Landroid/view/GestureDetector;
  
-@@ -668,6 +668,8 @@
+@@ -608,6 +608,8 @@
  
-     invoke-virtual {v0, v1, v2, v3}, Lk3/f;->b(Ljava/lang/Runnable;J)V
+     invoke-virtual {v0, v1, v2, v3}, Lu/e;->h(Ljava/lang/Runnable;J)V
  
 +    invoke-direct {p0, p1}, Lcom/realvnc/viewer/android/ui/KeyboardKey;->onTouchEventCheckRepeat(Landroid/view/MotionEvent;)V
 +
-     .line 4
-     iget-object p0, p0, Lcom/realvnc/viewer/android/ui/KeyboardKey;->f:Landroid/view/GestureDetector;
+     iget-object v0, p0, Lcom/realvnc/viewer/android/ui/KeyboardKey;->e:Landroid/view/GestureDetector;
  
-@@ -677,3 +679,19 @@
+     invoke-virtual {v0, p1}, Landroid/view/GestureDetector;->onTouchEvent(Landroid/view/MotionEvent;)Z
+@@ -616,3 +618,19 @@
  
-     return p0
+     return p1
  .end method
 +
 +.method private onTouchEventCheckRepeat(Landroid/view/MotionEvent;)V
@@ -58,19 +58,19 @@ index 7bd081a..0a5cf0f 100644
 +    const/4 v0, 0x1 # MotionEvent.ACTION_DOWN (0), MotionEvent.ACTION_UP (1)
 +    if-gt p1, v0, :out
 +
-+    iget-object p0, p0, Lcom/realvnc/viewer/android/ui/KeyboardKey;->g:Lm3/s;
-+    invoke-virtual {p0}, Lm3/s;->stopKeyRepeat()V
++    iget-object p0, p0, Lcom/realvnc/viewer/android/ui/KeyboardKey;->f:Lz2/q;
++    invoke-virtual {p0}, Lz2/q;->stopKeyRepeat()V
 +
 +    :out
 +    return-void
 +.end method
-diff --git a/smali/l3/s$KeyRepeatRunnable.smali b/smali/l3/s$KeyRepeatRunnable.smali
+diff --git a/smali/z2/q$KeyRepeatRunnable.smali b/smali/z2/q$KeyRepeatRunnable.smali
 new file mode 100644
-index 0000000..3a00600
+index 0000000..bfdab0a
 --- /dev/null
-+++ b/smali/l3/s$KeyRepeatRunnable.smali
++++ b/smali/z2/q$KeyRepeatRunnable.smali
 @@ -0,0 +1,29 @@
-+.class final Lm3/s$KeyRepeatRunnable;
++.class final Lz2/q$KeyRepeatRunnable;
 +.super Ljava/lang/Object;
 +.implements Ljava/lang/Runnable;
 +
@@ -80,58 +80,57 @@ index 0000000..3a00600
 +.method constructor <init>(Landroid/os/Handler;)V
 +    .locals 0
 +    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
-+    iput-object p1, p0, Lm3/s$KeyRepeatRunnable;->keyRepeatHandler:Landroid/os/Handler;
++    iput-object p1, p0, Lz2/q$KeyRepeatRunnable;->keyRepeatHandler:Landroid/os/Handler;
 +    return-void
 +.end method
 +
 +.method public final run()V
 +    .locals 3
 +
-+    iget-object v0, p0, Lm3/s$KeyRepeatRunnable;->key:Lcom/realvnc/viewer/android/ui/KeyboardKey;
++    iget-object v0, p0, Lz2/q$KeyRepeatRunnable;->key:Lcom/realvnc/viewer/android/ui/KeyboardKey;
 +    if-eqz v0, :out
 +
 +    invoke-virtual {v0}, Lcom/realvnc/viewer/android/ui/KeyboardKey;->n()V
 +
-+    iget-object v0, p0, Lm3/s$KeyRepeatRunnable;->keyRepeatHandler:Landroid/os/Handler;
++    iget-object v0, p0, Lz2/q$KeyRepeatRunnable;->keyRepeatHandler:Landroid/os/Handler;
 +    const-wide/16 v1, 75 # delay
 +    invoke-virtual {v0, p0, v1, v2}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
 +
 +    :out
 +    return-void
 +.end method
-diff --git a/smali/m3/s.smali b/smali/m3/s.smali
-index 82fa77e..2c99ab1 100644
---- a/smali/m3/s.smali
-+++ b/smali/m3/s.smali
-@@ -5,24 +5,41 @@
+diff --git a/smali/z2/q.smali b/smali/z2/q.smali
+index 93a7e8f..5184179 100644
+--- a/smali/z2/q.smali
++++ b/smali/z2/q.smali
+@@ -5,14 +5,41 @@
  
  # instance fields
  .field private a:Lcom/realvnc/viewer/android/ui/KeyboardKey;
 +.field private keyRepeatHandler:Landroid/os/Handler;
-+.field private keyRepeatRunnable:Lm3/s$KeyRepeatRunnable;
- 
- 
- # direct methods
- .method public constructor <init>()V
--    .locals 0
++.field private keyRepeatRunnable:Lz2/q$KeyRepeatRunnable;
++
++
++# direct methods
++.method public constructor <init>()V
 +    .locals 2
- 
-     invoke-direct {p0}, Landroid/view/GestureDetector$SimpleOnGestureListener;-><init>()V
- 
++
++    invoke-direct {p0}, Landroid/view/GestureDetector$SimpleOnGestureListener;-><init>()V
++
 +    invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
 +    move-result-object v1
 +
 +    new-instance v0, Landroid/os/Handler;
 +    invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
-+    iput-object v0, p0, Lm3/s;->keyRepeatHandler:Landroid/os/Handler;
++    iput-object v0, p0, Lz2/q;->keyRepeatHandler:Landroid/os/Handler;
 +    move-object v1, v0
 +
-+    new-instance v0, Lm3/s$KeyRepeatRunnable;
-+    invoke-direct {v0, v1}, Lm3/s$KeyRepeatRunnable;-><init>(Landroid/os/Handler;)V
-+    iput-object v0, p0, keyRepeatRunnable:Lm3/s$KeyRepeatRunnable;
++    new-instance v0, Lz2/q$KeyRepeatRunnable;
++    invoke-direct {v0, v1}, Lz2/q$KeyRepeatRunnable;-><init>(Landroid/os/Handler;)V
++    iput-object v0, p0, keyRepeatRunnable:Lz2/q$KeyRepeatRunnable;
 +
-     return-void
- .end method
++    return-void
++.end method
  
  
  # virtual methods
@@ -139,30 +138,30 @@ index 82fa77e..2c99ab1 100644
 -    .locals 0
 +    .locals 1
  
-     iput-object p1, p0, Lm3/s;->a:Lcom/realvnc/viewer/android/ui/KeyboardKey;
+     iput-object p1, p0, Lz2/q;->a:Lcom/realvnc/viewer/android/ui/KeyboardKey;
  
-+    iget-object v1, p0, Lm3/s;->keyRepeatRunnable:Lm3/s$KeyRepeatRunnable;
-+    iput-object p1, v1, Lm3/s$KeyRepeatRunnable;->key:Lcom/realvnc/viewer/android/ui/KeyboardKey;
++    iget-object v1, p0, Lz2/q;->keyRepeatRunnable:Lz2/q$KeyRepeatRunnable;
++    iput-object p1, v1, Lz2/q$KeyRepeatRunnable;->key:Lcom/realvnc/viewer/android/ui/KeyboardKey;
 +
      return-void
  .end method
  
-@@ -38,6 +55,33 @@
-     return p0
+@@ -28,6 +55,33 @@
+     return p1
  .end method
  
 +.method public final onLongPress(Landroid/view/MotionEvent;)V
 +    .locals 2
 +
-+    iget-object v0, p0, Lm3/s;->a:Lcom/realvnc/viewer/android/ui/KeyboardKey;
-+    invoke-virtual {v0}, Lcom/realvnc/viewer/android/ui/KeyboardKey;->f()I # getter for KeyboardKey.e (which is 1 if key can be locked down)
++    iget-object v0, p0, Lz2/q;->a:Lcom/realvnc/viewer/android/ui/KeyboardKey;
++    invoke-virtual {v0}, Lcom/realvnc/viewer/android/ui/KeyboardKey;->f()I # getter for KeyboardKey.d (which is 1 if key can be locked down)
 +    move-result v0
 +    if-eqz v0, :repeat # if key can't be locked (i.e., is not a modifier), start repeating
 +    return-void
 +
 +    :repeat
-+    iget-object v0, p0, Lm3/s;->keyRepeatHandler:Landroid/os/Handler;
-+    iget-object v1, p0, Lm3/s;->keyRepeatRunnable:Lm3/s$KeyRepeatRunnable;
++    iget-object v0, p0, Lz2/q;->keyRepeatHandler:Landroid/os/Handler;
++    iget-object v1, p0, Lz2/q;->keyRepeatRunnable:Lz2/q$KeyRepeatRunnable;
 +    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 +
 +    return-void
@@ -171,8 +170,8 @@ index 82fa77e..2c99ab1 100644
 +.method public final stopKeyRepeat()V
 +    .locals 2
 +
-+    iget-object v0, p0, Lm3/s;->keyRepeatHandler:Landroid/os/Handler;
-+    iget-object v1, p0, Lm3/s;->keyRepeatRunnable:Lm3/s$KeyRepeatRunnable;
++    iget-object v0, p0, Lz2/q;->keyRepeatHandler:Landroid/os/Handler;
++    iget-object v1, p0, Lz2/q;->keyRepeatRunnable:Lz2/q$KeyRepeatRunnable;
 +    invoke-virtual {v0, v1}, Landroid/os/Handler;->removeCallbacks(Ljava/lang/Runnable;)V
 +
 +    return-void

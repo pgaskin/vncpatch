@@ -1,9 +1,9 @@
 #!/bin/sh
 set -eu
 
-apk_default_name="com.realvnc.viewer.android_4.7.0.51044.apk"
-apk_default_url="https://www.apkmirror.com/apk/realvnc-limited/vnc-viewer/vnc-viewer-4-7-0-51044-release/vnc-viewer-remote-desktop-4-7-0-51044-android-apk-download/"
-apk_default_sha="62119a92fd21e34cb2cf7c4fe6147a1b06696f25e4df3610dc1a4eb13dde84dc"
+apk_default_name="com.realvnc.viewer.android_4.8.0.52006.apk"
+apk_default_url="https://help.realvnc.com/hc/en-us/article_attachments/16743785141789"
+apk_default_sha="6888d49ec0de11d69a2c2837b693e9d2fcb364a4a04e85ac8ec0c4c253c7c761"
 
 nosave=""
 java="java"

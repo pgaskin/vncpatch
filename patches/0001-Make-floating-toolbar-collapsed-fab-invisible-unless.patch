@@ -1,29 +1,32 @@
-From 2bd9fb1a97e544c381f0e0ca77eda4391eb3268d Mon Sep 17 00:00:00 2001
+From be102324e373a64014629702ca1e6a25effaa1e9 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:07 -0400
-Subject: [PATCH 1/5] Make floating toolbar collapsed fab invisible unless
+Subject: [PATCH 1/6] Make floating toolbar collapsed fab invisible unless
  closed
 
 Updating:
 - Find the obsfucated file with the setAlpha for the FAB (try: ag '0x3f000000' -C15 | ag setAlpha).
 - Test to ensure that the FAB behaves correctly.
 
-diff --git a/smali/n3/k.smali b/smali/n3/k.smali
-index 567cad9..e1bbeb8 100644
---- a/smali/n3/k.smali
-+++ b/smali/n3/k.smali
-@@ -765,12 +765,12 @@
+diff --git a/smali/a3/i.smali b/smali/a3/i.smali
+index 7f927a7..82b6836 100644
+--- a/smali/a3/i.smali
++++ b/smali/a3/i.smali
+@@ -654,7 +654,7 @@
+ 
+     iget-boolean v3, p0, La3/i;->v:Z
+ 
+-    const/high16 v5, 0x3f800000    # 1.0f
++    const/high16 v5, 0x00000000    # 0.0f
+ 
+     if-eq v0, v3, :cond_2
+ 
+@@ -678,7 +678,7 @@
  
      if-eqz v0, :cond_1
  
--    const/high16 v3, 0x3f000000    # 0.5f
-+    const/high16 v3, 0x3e800000    # 0.25f
+-    const/high16 v6, 0x3f000000    # 0.5f
++    const/high16 v6, 0x3e800000    # 0.25f
  
      goto :goto_0
  
-     :cond_1
--    const/high16 v3, 0x3f800000    # 1.0f
-+    const/high16 v3, 0x00000000    # 0.0f
- 
-     :goto_0
-     invoke-virtual {v2, v3}, Landroid/view/View;->setAlpha(F)V
