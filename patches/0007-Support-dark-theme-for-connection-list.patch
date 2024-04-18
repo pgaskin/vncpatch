@@ -1,0 +1,157 @@
+From de30735f1e3d279539d26cd1ba2f7edb00468b2b Mon Sep 17 00:00:00 2001
+From: Patrick Gaskin <patrick@pgaskin.net>
+Date: Wed, 17 Apr 2024 20:53:54 -0400
+Subject: [PATCH 7/7] Support dark theme for connection list
+
+WIP. Not all colors have been overridden, and some parts are ugly.
+
+diff --git a/AndroidManifest.xml b/AndroidManifest.xml
+index 202bed5..85b2032 100644
+--- a/AndroidManifest.xml
++++ b/AndroidManifest.xml
+@@ -43,7 +43,7 @@
+         <provider android:authorities="com.realvnc.viewer.android.patched.data.AddressBook" android:exported="false" android:name="com.realvnc.viewer.android.model.AddressBookProvider"/>
+         <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-2734742209554862~2205718440"/>
+         <meta-data android:name="android.content.APP_RESTRICTIONS" android:resource="@xml/app_restrictions"/>
+-        <activity android:alwaysRetainTaskState="true" android:exported="true" android:label="@string/app_name" android:launchMode="singleTop" android:name="com.realvnc.viewer.android.app.ConnectionChooserActivity" android:theme="@style/ThemeViewerFullscreen" android:windowSoftInputMode="adjustResize|stateUnchanged">
++        <activity android:alwaysRetainTaskState="true" android:exported="true" android:label="@string/app_name" android:launchMode="singleTop" android:name="com.realvnc.viewer.android.app.ConnectionChooserActivity" android:theme="@style/ThemeConnectionChooser" android:windowSoftInputMode="adjustResize|stateUnchanged">
+             <intent-filter>
+                 <action android:name="com.realvnc.viewer.android.patched.CONNECTIONS"/>
+                 <category android:name="android.intent.category.DEFAULT"/>
+diff --git a/res/layout/connection_item_grid_multiline.xml b/res/layout/connection_item_grid_multiline.xml
+index 0ecee59..183b806 100644
+--- a/res/layout/connection_item_grid_multiline.xml
++++ b/res/layout/connection_item_grid_multiline.xml
+@@ -8,7 +8,7 @@
+             <ImageView android:layout_gravity="bottom|center|right" android:id="@id/online_icon" android:layout_width="48.0dip" android:layout_height="204.0dip" android:src="@drawable/ic_online" android:scaleType="center" />
+             <ImageView android:layout_gravity="bottom|center|right" android:id="@id/offline_icon" android:layout_width="48.0dip" android:layout_height="204.0dip" android:src="@drawable/ic_offline" android:scaleType="center" />
+         </FrameLayout>
+-        <RelativeLayout android:gravity="bottom" android:layout_gravity="bottom" android:orientation="horizontal" android:id="@id/connection_item_container" android:background="#aaffffff" android:layout_width="fill_parent" android:layout_height="68.0dip">
++        <RelativeLayout android:gravity="bottom" android:layout_gravity="bottom" android:orientation="horizontal" android:id="@id/connection_item_container" android:background="@color/connection_item_background_grid" android:layout_width="fill_parent" android:layout_height="68.0dip">
+             <TextView android:textAppearance="@style/TextAppearance.AppCompat.Small" android:textColor="@color/addressbook_default_foreground" android:id="@id/connection_item_line2" android:paddingLeft="16.0dip" android:paddingBottom="4.0dip" android:layout_width="wrap_content" android:layout_height="32.0dip" android:text="line2" android:singleLine="true" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true" android:layout_alignParentStart="true" />
+             <TextView android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textColor="@color/addressbook_default_foreground" android:gravity="center_vertical" android:id="@id/connection_item_line1" android:paddingLeft="16.0dip" android:paddingTop="4.0dip" android:paddingRight="40.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="line1" android:singleLine="true" android:layout_above="@id/connection_item_line2" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_alignWithParentIfMissing="true" android:layout_alignParentStart="true" />
+             <ImageView android:gravity="center_horizontal" android:id="@id/secondary_action_button" android:layout_width="48.0dip" android:layout_height="fill_parent" android:src="@drawable/ic_menu_details_grid" android:scaleType="center" android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_alignParentEnd="true" style="@style/selectable_image_view" />
+diff --git a/res/layout/connection_item_list_multiline.xml b/res/layout/connection_item_list_multiline.xml
+index 4063146..ae6f700 100644
+--- a/res/layout/connection_item_list_multiline.xml
++++ b/res/layout/connection_item_list_multiline.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<FrameLayout android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="@dimen/listview_row_height"
++<FrameLayout android:background="@color/connection_item_background_list" android:layout_width="fill_parent" android:layout_height="@dimen/listview_row_height"
+   xmlns:android="http://schemas.android.com/apk/res/android">
+     <com.realvnc.viewer.android.ui.ListItemLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/connection_item_list" android:background="?selectableItemBackground" android:layout_width="fill_parent" android:layout_height="@dimen/listview_row_height">
+         <FrameLayout android:gravity="center" android:layout_width="@dimen/thumbnail_width" android:layout_height="@dimen/thumbnail_height">
+diff --git a/res/layout/dialog_editing.xml b/res/layout/dialog_editing.xml
+index 85fb7a0..a9ae89d 100644
+--- a/res/layout/dialog_editing.xml
++++ b/res/layout/dialog_editing.xml
+@@ -2,7 +2,7 @@
+ <LinearLayout android:orientation="vertical" android:id="@id/dialog_editing_layout" android:padding="20.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+   xmlns:android="http://schemas.android.com/apk/res/android">
+     <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/black" android:id="@id/edit_address_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:text="@string/address_label" />
+-    <EditText android:id="@id/edit_address_field" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:hint="@string/hint_address" android:lines="1" android:minLines="1" android:inputType="textUri" android:imeOptions="actionNext|flagNavigateNext" />
++    <EditText android:id="@id/edit_address_field" android:textColor="@android:color/black" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:hint="@string/hint_address" android:lines="1" android:minLines="1" android:inputType="textUri" android:imeOptions="actionNext|flagNavigateNext" />
+     <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/black" android:id="@id/edit_name_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:text="@string/name_label" />
+-    <EditText android:id="@id/edit_name_field" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:hint="@string/hint_name" android:lines="1" android:minLines="1" android:inputType="textCapWords|textNoSuggestions" android:imeOptions="actionDone|flagNavigateNext" />
++    <EditText android:id="@id/edit_name_field" android:textColor="@android:color/black" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:hint="@string/hint_name" android:lines="1" android:minLines="1" android:inputType="textCapWords|textNoSuggestions" android:imeOptions="actionDone|flagNavigateNext" />
+ </LinearLayout>
+\ No newline at end of file
+diff --git a/res/layout/dialog_fragment_settings.xml b/res/layout/dialog_fragment_settings.xml
+index 29b33ad..d993827 100644
+--- a/res/layout/dialog_fragment_settings.xml
++++ b/res/layout/dialog_fragment_settings.xml
+@@ -1,10 +1,10 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<LinearLayout android:orientation="vertical" android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
++<LinearLayout android:orientation="vertical" android:background="@color/fragment_background" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:android="http://schemas.android.com/apk/res/android">
+     <androidx.appcompat.widget.Toolbar android:theme="@style/CustomActionBarTheme" android:id="@id/toolbar" android:background="?colorPrimary" android:layout_width="fill_parent" android:layout_height="?actionBarSize" app:navigationIcon="@drawable/ic_arrow_back_white_24dp" app:popupTheme="@style/PopupMenuListView" app:title="@string/title_settings" />
+     <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+         <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+-            <LinearLayout android:orientation="vertical" android:background="@android:color/white" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:divider="?dividerHorizontal" android:showDividers="middle">
++            <LinearLayout android:orientation="vertical" android:background="@color/fragment_background" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:divider="?dividerHorizontal" android:showDividers="middle">
+                 <RelativeLayout android:id="@id/keyboard_outer_container" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                     <TextView android:textAppearance="@style/TextAppearance.AppCompat.Subhead" android:textColor="@color/colour_accent" android:id="@id/keyboard_autocomplete_heading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/keyboard_autocomplete_heading" />
+                     <com.realvnc.viewer.android.ui.SwitchRowWidget android:id="@id/keyboard_autocomplete_switch" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/keyboard_autocomplete_heading" app:switchHeader="@string/keyboard_autocomplete_label" app:switchID="@id/auto_correct_settings_switch" app:switchLabel="@string/keyboard_autocomplete_desc" />
+diff --git a/res/values-night/colors.xml b/res/values-night/colors.xml
+new file mode 100644
+index 0000000..75417d4
+--- /dev/null
++++ b/res/values-night/colors.xml
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <!-- e.g., connection chooser list background -->
++    <color name="fragment_background">#ff222222</color>
++    <!-- e.g., divider lines -->
++    <color name="light_grey">#ff242424</color>
++    <!-- e.g., connection chooser list item background -->
++    <color name="connection_item_background_list">#ff2a2a2a</color>
++    <color name="connection_item_background_grid">#aa2a2a2a</color>
++</resources>
+diff --git a/res/values-night/styles.xml b/res/values-night/styles.xml
+index 2dfc60a..9cd3760 100644
+--- a/res/values-night/styles.xml
++++ b/res/values-night/styles.xml
+@@ -41,4 +41,15 @@
+     <style name="Widget.MaterialComponents.NavigationRailView.PrimarySurface" parent="@style/Widget.MaterialComponents.NavigationRailView" />
+     <style name="Widget.MaterialComponents.TabLayout.PrimarySurface" parent="@style/Widget.MaterialComponents.TabLayout" />
+     <style name="Widget.MaterialComponents.Toolbar.PrimarySurface" parent="@style/Widget.MaterialComponents.Toolbar.Surface" />
++    <style name="heading">
++        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
++        <item name="android:textSize">16.0sp</item>
++        <item name="android:textColor">@color/abc_primary_text_material_dark</item>
++        <item name="android:textColorHint">@color/light_grey_hint_text</item>
++    </style>
++    <style name="subheading">
++        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
++        <item name="android:textSize">14.0sp</item>
++        <item name="android:textColor">@color/abc_secondary_text_material_dark</item>
++    </style>
+ </resources>
+diff --git a/res/values/colors.xml b/res/values/colors.xml
+index 7310a26..1b0090f 100644
+--- a/res/values/colors.xml
++++ b/res/values/colors.xml
+@@ -100,6 +100,8 @@
+     <color name="foreground_material_dark">@android:color/white</color>
+     <color name="foreground_material_light">@android:color/black</color>
+     <color name="fragment_background">#ffeeeeee</color>
++    <color name="connection_item_background_list">#ffffffff</color>
++    <color name="connection_item_background_grid">#aaffffff</color>
+     <color name="fullscreen_toolbar_bg">#aaffffff</color>
+     <color name="fullscreen_toolbar_blue">#ff0036d8</color>
+     <color name="highlighted_text_material_dark">#6680cbc4</color>
+diff --git a/res/values/public.xml b/res/values/public.xml
+index 83ca969..91a66bd 100644
+--- a/res/values/public.xml
++++ b/res/values/public.xml
+@@ -2241,6 +2241,8 @@
+     <public type="color" name="material_dynamic_tertiary90" id="0x7f060269" />
+     <public type="color" name="material_dynamic_tertiary95" id="0x7f06026a" />
+     <public type="color" name="material_dynamic_tertiary99" id="0x7f06026b" />
++    <public type="color" name="connection_item_background_list" id="0x7f060327" />
++    <public type="color" name="connection_item_background_grid" id="0x7f060328" />
+     <public type="dimen" name="abc_action_bar_content_inset_material" id="0x7f070000" />
+     <public type="dimen" name="abc_action_bar_content_inset_with_nav" id="0x7f070001" />
+     <public type="dimen" name="abc_action_bar_default_height_material" id="0x7f070002" />
+diff --git a/res/values/styles.xml b/res/values/styles.xml
+index 582212c..46f2d75 100644
+--- a/res/values/styles.xml
++++ b/res/values/styles.xml
+@@ -4477,6 +4477,14 @@
+         <item name="colorPrimaryDark">@color/colour_primary_dark</item>
+         <item name="preferenceTheme">@style/CustomPreferenceThemeOverlay</item>
+     </style>
++    <style name="ThemeConnectionChooser" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
++        <item name="android:windowContentTransitions">true</item>
++        <item name="colorAccent">@color/colour_accent</item>
++        <item name="colorControlNormal">@color/colour_control_normal</item>
++        <item name="colorPrimary">@color/colour_primary</item>
++        <item name="colorPrimaryDark">@color/colour_primary_dark</item>
++        <item name="preferenceTheme">@style/CustomPreferenceThemeOverlay</item>
++    </style>
+     <style name="ThemeViewerNoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+         <item name="android:windowContentTransitions">true</item>
+         <item name="colorAccent">@color/colour_accent</item>

@@ -1,7 +1,7 @@
 From d378567631a4cac1abf50f762253e80851e9bb16 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 23:05:33 -0400
-Subject: [PATCH 4/6] Implement key repeat for extension keyboard
+Subject: [PATCH 4/7] Implement key repeat for extension keyboard
 
 Allows keys to be long-pressed (typically 500ms) to start repeating
 them at 75ms. Doesn't apply to modifier keys.

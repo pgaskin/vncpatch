@@ -1,7 +1,7 @@
 From be102324e373a64014629702ca1e6a25effaa1e9 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:07 -0400
-Subject: [PATCH 1/6] Make floating toolbar collapsed fab invisible unless
+Subject: [PATCH 1/7] Make floating toolbar collapsed fab invisible unless
  closed
 
 Updating:

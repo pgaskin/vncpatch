@@ -1,7 +1,7 @@
 From 7496bc6ee6ce9135cc89c1d3c809a02736b66f82 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:15 -0400
-Subject: [PATCH 2/6] Improve floating toolbar usability and appearance
+Subject: [PATCH 2/7] Improve floating toolbar usability and appearance
 
 Updating:
 - Update the resources.
