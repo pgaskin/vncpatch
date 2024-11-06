@@ -1,4 +1,4 @@
-From de30735f1e3d279539d26cd1ba2f7edb00468b2b Mon Sep 17 00:00:00 2001
+From 0b56ea5d98d8833fa604025ed4537e04be077971 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 20:53:54 -0400
 Subject: [PATCH 7/7] Support dark theme for connection list
@@ -6,18 +6,39 @@ Subject: [PATCH 7/7] Support dark theme for connection list
 WIP. Not all colors have been overridden, and some parts are ugly.
 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index 202bed5..85b2032 100644
+index 372d169..e29fd26 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
-@@ -43,7 +43,7 @@
+@@ -25,7 +25,7 @@
          <provider android:authorities="com.realvnc.viewer.android.patched.data.AddressBook" android:exported="false" android:name="com.realvnc.viewer.android.model.AddressBookProvider"/>
          <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-2734742209554862~2205718440"/>
          <meta-data android:name="android.content.APP_RESTRICTIONS" android:resource="@xml/app_restrictions"/>
 -        <activity android:alwaysRetainTaskState="true" android:exported="true" android:label="@string/app_name" android:launchMode="singleTop" android:name="com.realvnc.viewer.android.app.ConnectionChooserActivity" android:theme="@style/ThemeViewerFullscreen" android:windowSoftInputMode="adjustResize|stateUnchanged">
 +        <activity android:alwaysRetainTaskState="true" android:exported="true" android:label="@string/app_name" android:launchMode="singleTop" android:name="com.realvnc.viewer.android.app.ConnectionChooserActivity" android:theme="@style/ThemeConnectionChooser" android:windowSoftInputMode="adjustResize|stateUnchanged">
              <intent-filter>
-                 <action android:name="com.realvnc.viewer.android.patched.CONNECTIONS"/>
-                 <category android:name="android.intent.category.DEFAULT"/>
+                 <action android:name="android.intent.action.MAIN"/>
+                 <category android:name="android.intent.category.LAUNCHER"/>
+diff --git a/res/layout/activity_desktop.xml b/res/layout/activity_desktop.xml
+index 8087a93..a76f641 100644
+--- a/res/layout/activity_desktop.xml
++++ b/res/layout/activity_desktop.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<com.realvnc.viewer.android.ui.FitsSystemWindowsDrawerLayout android:id="@id/desktop_drawer_layout" android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="fill_parent"
++<com.realvnc.viewer.android.ui.FitsSystemWindowsDrawerLayout android:id="@id/desktop_drawer_layout" android:background="@color/progress_overlay_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+   xmlns:android="http://schemas.android.com/apk/res/android">
+     <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+         <com.realvnc.viewer.android.ui.input.CapturingEditText android:id="@id/hidden_input_view" android:focusable="true" android:layout_width="1.0dip" android:layout_height="1.0dip" android:text="" android:singleLine="false" android:imeOptions="actionNone|flagNoExtractUi" />
+@@ -18,7 +18,7 @@
+             <include layout="@layout/fragment_coach_marks_tutorial" />
+             <include layout="@layout/fullscreen_toolbar" />
+         </com.realvnc.viewer.android.ui.input.InterceptingRelativeLayout>
+-        <com.realvnc.viewer.android.ui.ProgressView android:orientation="vertical" android:id="@id/ProgressOverlay" android:background="@color/almost_white" android:focusable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:isScrollContainer="false" />
++        <com.realvnc.viewer.android.ui.ProgressView android:orientation="vertical" android:id="@id/ProgressOverlay" android:background="@color/progress_overlay_bg" android:focusable="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:isScrollContainer="false" />
+     </FrameLayout>
+     <com.realvnc.viewer.android.ui.FrameLayoutWithInsetFix android:layout_gravity="end" android:id="@id/information_container_view" android:background="@color/background_material_light" android:fitsSystemWindows="true" android:layout_width="@dimen/summary_container_width" android:layout_height="fill_parent" android:layout_marginLeft="-64.0dip" />
+ </com.realvnc.viewer.android.ui.FitsSystemWindowsDrawerLayout>
+\ No newline at end of file
 diff --git a/res/layout/connection_item_grid_multiline.xml b/res/layout/connection_item_grid_multiline.xml
 index 0ecee59..183b806 100644
 --- a/res/layout/connection_item_grid_multiline.xml
@@ -74,27 +95,53 @@ index 29b33ad..d993827 100644
                  <RelativeLayout android:id="@id/keyboard_outer_container" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
                      <TextView android:textAppearance="@style/TextAppearance.AppCompat.Subhead" android:textColor="@color/colour_accent" android:id="@id/keyboard_autocomplete_heading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/keyboard_autocomplete_heading" />
                      <com.realvnc.viewer.android.ui.SwitchRowWidget android:id="@id/keyboard_autocomplete_switch" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/keyboard_autocomplete_heading" app:switchHeader="@string/keyboard_autocomplete_label" app:switchID="@id/auto_correct_settings_switch" app:switchLabel="@string/keyboard_autocomplete_desc" />
+diff --git a/res/layout/overlay_progress.xml b/res/layout/overlay_progress.xml
+index 4ca6bab..5565bf3 100644
+--- a/res/layout/overlay_progress.xml
++++ b/res/layout/overlay_progress.xml
+@@ -5,8 +5,8 @@
+         <ImageView android:id="@id/progress_image_v" android:layout_width="103.0dip" android:layout_height="83.0dip" android:src="@drawable/progress_v" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
+         <ImageView android:id="@id/progress_image_n" android:layout_width="103.0dip" android:layout_height="83.0dip" android:src="@drawable/progress_n" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
+         <ImageView android:id="@id/progress_image_c" android:layout_width="103.0dip" android:layout_height="83.0dip" android:src="@drawable/progress_c" android:layout_centerHorizontal="true" android:layout_centerVertical="true" />
+-        <TextView android:textSize="@dimen/abc_text_size_medium_material" android:gravity="center_horizontal" android:id="@id/overlay_progress_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/progress_text_margin_top" android:text="@string/dialog_progress_title" android:layout_below="@id/progress_image_v" android:layout_centerHorizontal="true" />
+-        <TextView android:textSize="@dimen/abc_text_size_medium_material" android:id="@id/overlay_progress_reconnect_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/progress_text_margin_top" android:layout_below="@id/progress_image_v" android:layout_centerHorizontal="true" />
++        <TextView android:textSize="@dimen/abc_text_size_medium_material" android:textColor="@color/progress_overlay_fg" android:gravity="center_horizontal" android:id="@id/overlay_progress_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/progress_text_margin_top" android:text="@string/dialog_progress_title" android:layout_below="@id/progress_image_v" android:layout_centerHorizontal="true" />
++        <TextView android:textSize="@dimen/abc_text_size_medium_material" android:textColor="@color/progress_overlay_fg" android:id="@id/overlay_progress_reconnect_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/progress_text_margin_top" android:layout_below="@id/progress_image_v" android:layout_centerHorizontal="true" />
+     </RelativeLayout>
+     <RelativeLayout android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0" android:layout_alignParentBottom="true">
+         <androidx.cardview.widget.CardView android:id="@id/progress_cancel_cardview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" card_view:cardBackgroundColor="@color/vnc_red" card_view:cardCornerRadius="4.0dip" card_view:cardElevation="3.0dip" xmlns:card_view="http://schemas.android.com/apk/res-auto">
 diff --git a/res/values-night/colors.xml b/res/values-night/colors.xml
 new file mode 100644
-index 0000000..75417d4
+index 0000000..9d16a09
 --- /dev/null
 +++ b/res/values-night/colors.xml
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,21 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<resources>
++    <!-- e.g., main toolbars, icons -->
++    <color name="primary_blue">#ff11559c</color>
 +    <!-- e.g., connection chooser list background -->
-+    <color name="fragment_background">#ff222222</color>
++    <color name="fragment_background">#ff1c1c1c</color>
 +    <!-- e.g., divider lines -->
-+    <color name="light_grey">#ff242424</color>
++    <color name="light_grey">#ff1e1e1e</color>
 +    <!-- e.g., connection chooser list item background -->
-+    <color name="connection_item_background_list">#ff2a2a2a</color>
-+    <color name="connection_item_background_grid">#aa2a2a2a</color>
++    <color name="connection_item_background_list">#ff202020</color>
++    <color name="connection_item_background_grid">#aa202020</color>
++    <!-- e.g., connection info list item background -->
++    <color name="cardview_dark_background">#ff202020</color>
++    <!-- e.g., desktop view toolbar -->
++    <color name="fullscreen_toolbar_bg">#aa222222</color>
++    <color name="fullscreen_toolbar_blue">#ffc2d1ff</color>
++    <color name="branded_grey">#ff36455c</color>
++    <!-- e.g., progress overlay -->
++    <color name="progress_overlay_bg">#ff000002</color>
++    <color name="progress_overlay_fg">#ffeeeeee</color>
 +</resources>
 diff --git a/res/values-night/styles.xml b/res/values-night/styles.xml
-index 2dfc60a..9cd3760 100644
+index 2dfc60a..d995896 100644
 --- a/res/values-night/styles.xml
 +++ b/res/values-night/styles.xml
-@@ -41,4 +41,15 @@
+@@ -41,4 +41,30 @@
      <style name="Widget.MaterialComponents.NavigationRailView.PrimarySurface" parent="@style/Widget.MaterialComponents.NavigationRailView" />
      <style name="Widget.MaterialComponents.TabLayout.PrimarySurface" parent="@style/Widget.MaterialComponents.TabLayout" />
      <style name="Widget.MaterialComponents.Toolbar.PrimarySurface" parent="@style/Widget.MaterialComponents.Toolbar.Surface" />
@@ -109,12 +156,27 @@ index 2dfc60a..9cd3760 100644
 +        <item name="android:textSize">14.0sp</item>
 +        <item name="android:textColor">@color/abc_secondary_text_material_dark</item>
 +    </style>
++    <style name="Card">
++        <item name="android:layout_gravity">center</item>
++        <item name="android:paddingLeft">80.0dip</item>
++        <item name="android:paddingRight">80.0dip</item>
++        <item name="android:layout_width">fill_parent</item>
++        <item name="android:layout_height">wrap_content</item>
++        <item name="android:layout_marginLeft">-8.0dip</item>
++        <item name="android:layout_marginTop">8.0dip</item>
++        <item name="android:layout_marginRight">-8.0dip</item>
++        <item name="cardCornerRadius">0.0dip</item>
++        <item name="cardUseCompatPadding">true</item>
++        <item name="contentPaddingLeft">8.0dip</item>
++        <item name="contentPaddingRight">8.0dip</item>
++        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
++    </style>
  </resources>
 diff --git a/res/values/colors.xml b/res/values/colors.xml
-index 7310a26..1b0090f 100644
+index a9090b1..b024806 100644
 --- a/res/values/colors.xml
 +++ b/res/values/colors.xml
-@@ -100,6 +100,8 @@
+@@ -91,6 +91,8 @@
      <color name="foreground_material_dark">@android:color/white</color>
      <color name="foreground_material_light">@android:color/black</color>
      <color name="fragment_background">#ffeeeeee</color>
@@ -123,28 +185,45 @@ index 7310a26..1b0090f 100644
      <color name="fullscreen_toolbar_bg">#aaffffff</color>
      <color name="fullscreen_toolbar_blue">#ff0036d8</color>
      <color name="highlighted_text_material_dark">#6680cbc4</color>
+@@ -382,4 +384,6 @@
+     <color name="warning_dark_red">#ffcf0c00</color>
+     <color name="warning_light_orange">#ffe6a000</color>
+     <color name="warning_light_red">#ffc00d00</color>
++    <color name="progress_overlay_bg">#fffffffe</color>
++    <color name="progress_overlay_fg">#ff000000</color>
+ </resources>
 diff --git a/res/values/public.xml b/res/values/public.xml
-index 83ca969..91a66bd 100644
+index 299fa6d..234b677 100644
 --- a/res/values/public.xml
 +++ b/res/values/public.xml
-@@ -2241,6 +2241,8 @@
-     <public type="color" name="material_dynamic_tertiary90" id="0x7f060269" />
-     <public type="color" name="material_dynamic_tertiary95" id="0x7f06026a" />
-     <public type="color" name="material_dynamic_tertiary99" id="0x7f06026b" />
-+    <public type="color" name="connection_item_background_list" id="0x7f060327" />
-+    <public type="color" name="connection_item_background_grid" id="0x7f060328" />
-     <public type="dimen" name="abc_action_bar_content_inset_material" id="0x7f070000" />
-     <public type="dimen" name="abc_action_bar_content_inset_with_nav" id="0x7f070001" />
-     <public type="dimen" name="abc_action_bar_default_height_material" id="0x7f070002" />
+@@ -2024,6 +2024,10 @@
+     <public type="color" name="warning_dark_red" id="0x7f060333" />
+     <public type="color" name="warning_light_orange" id="0x7f060334" />
+     <public type="color" name="warning_light_red" id="0x7f060335" />
++    <public type="color" name="connection_item_background_list" id="0x7f060336" />
++    <public type="color" name="connection_item_background_grid" id="0x7f060337" />
++    <public type="color" name="progress_overlay_bg" id="0x7f060338" />
++    <public type="color" name="progress_overlay_fg" id="0x7f060339" />
+     <public type="color" name="m3_dynamic_dark_default_color_primary_text" id="0x7f06009b" />
+     <public type="color" name="m3_dynamic_dark_default_color_secondary_text" id="0x7f06009c" />
+     <public type="color" name="m3_dynamic_dark_highlighted_text" id="0x7f06009d" />
 diff --git a/res/values/styles.xml b/res/values/styles.xml
-index 582212c..46f2d75 100644
+index eb01005..dbc99e6 100644
 --- a/res/values/styles.xml
 +++ b/res/values/styles.xml
-@@ -4477,6 +4477,14 @@
-         <item name="colorPrimaryDark">@color/colour_primary_dark</item>
-         <item name="preferenceTheme">@style/CustomPreferenceThemeOverlay</item>
+@@ -4497,6 +4497,7 @@
+         <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
      </style>
-+    <style name="ThemeConnectionChooser" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
+     <style name="ThemeViewer" parent="@style/Theme.AppCompat.Light.DarkActionBar">
++        <item name="android:windowBackground">@android:color/black</item>
+         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+         <item name="colorAccent">@color/colour_accent</item>
+         <item name="colorControlNormal">@color/colour_control_normal</item>
+@@ -4504,6 +4505,15 @@
+         <item name="colorPrimaryDark">@color/colour_primary_dark</item>
+     </style>
+     <style name="ThemeViewerFullscreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
++        <item name="android:windowBackground">@android:color/black</item>
 +        <item name="android:windowContentTransitions">true</item>
 +        <item name="colorAccent">@color/colour_accent</item>
 +        <item name="colorControlNormal">@color/colour_control_normal</item>
@@ -152,6 +231,15 @@ index 582212c..46f2d75 100644
 +        <item name="colorPrimaryDark">@color/colour_primary_dark</item>
 +        <item name="preferenceTheme">@style/CustomPreferenceThemeOverlay</item>
 +    </style>
-     <style name="ThemeViewerNoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
++    <style name="ThemeConnectionChooser" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
          <item name="android:windowContentTransitions">true</item>
          <item name="colorAccent">@color/colour_accent</item>
+         <item name="colorControlNormal">@color/colour_control_normal</item>
+@@ -4512,6 +4522,7 @@
+         <item name="preferenceTheme">@style/CustomPreferenceThemeOverlay</item>
+     </style>
+     <style name="ThemeViewerNoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
++        <item name="android:windowBackground">@android:color/black</item>
+         <item name="android:windowContentTransitions">true</item>
+         <item name="colorAccent">@color/colour_accent</item>
+         <item name="colorControlNormal">@color/colour_control_normal</item>

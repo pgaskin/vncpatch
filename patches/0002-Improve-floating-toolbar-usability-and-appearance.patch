@@ -1,4 +1,4 @@
-From 7496bc6ee6ce9135cc89c1d3c809a02736b66f82 Mon Sep 17 00:00:00 2001
+From 4efa13b3f0f4ddab6fa6205b09ce7784d1d5f3a7 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:15 -0400
 Subject: [PATCH 2/7] Improve floating toolbar usability and appearance
@@ -10,10 +10,10 @@ Updating:
 - Test to ensure the toolbar and FAB are larger.
 
 diff --git a/res/values/colors.xml b/res/values/colors.xml
-index 9987630..7310a26 100644
+index a35406b..a9090b1 100644
 --- a/res/values/colors.xml
 +++ b/res/values/colors.xml
-@@ -100,7 +100,7 @@
+@@ -91,7 +91,7 @@
      <color name="foreground_material_dark">@android:color/white</color>
      <color name="foreground_material_light">@android:color/black</color>
      <color name="fragment_background">#ffeeeeee</color>
@@ -23,10 +23,10 @@ index 9987630..7310a26 100644
      <color name="highlighted_text_material_dark">#6680cbc4</color>
      <color name="highlighted_text_material_light">#66009688</color>
 diff --git a/res/values/dimens.xml b/res/values/dimens.xml
-index 7640ded..53e3f0a 100644
+index 30b3ce1..3d825e7 100644
 --- a/res/values/dimens.xml
 +++ b/res/values/dimens.xml
-@@ -858,7 +858,7 @@
+@@ -883,7 +883,7 @@
      <dimen name="thumbnail_height">72.0dip</dimen>
      <dimen name="thumbnail_width">96.0dip</dimen>
      <dimen name="toolbar_dropshadow_height">4.0dip</dimen>
@@ -35,10 +35,10 @@ index 7640ded..53e3f0a 100644
      <item type="dimen" name="toolbar_layout_height">@dimen/toolbar_fab_layout_size</item>
      <dimen name="toolbar_layout_width">260.0dip</dimen>
      <dimen name="toolbar_topshadow_height">2.0dip</dimen>
-diff --git a/smali/e3/e.smali b/smali/e3/e.smali
-index 1ea8a74..90a15f1 100644
---- a/smali/e3/e.smali
-+++ b/smali/e3/e.smali
+diff --git a/smali/c3/g.smali b/smali/c3/g.smali
+index bc3c111..64ea846 100644
+--- a/smali/c3/g.smali
++++ b/smali/c3/g.smali
 @@ -202,7 +202,7 @@
  
      const/high16 v1, 0x3f800000    # 1.0f

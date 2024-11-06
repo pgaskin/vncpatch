@@ -1,4 +1,4 @@
-From 449ab7adc29fddb0a3e44be193937ce5e5c8cbfe Mon Sep 17 00:00:00 2001
+From bce75577cf72285580f6aba02b10040467853c76 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 18:40:58 -0400
 Subject: [PATCH 3/7] Add pin-to-home button to connection details page
@@ -9,8 +9,9 @@ kind of useless if you have more than 4 connections.
 
 Updating:
 - Add the resources.
-- Find the onMenuItemClick method for the details toolbar (try: ag onMenuItemClick -C200 | ag finish).
+- Find the onMenuItemClick method for the details toolbar (try searching for the value of @id/menu_delete_connection).
 - Find the connection info class (it's used many times in the file -- it's usually the private field between two Uri fields), and diff it with the old one to ensure the method names are up-to-date.
+- Also ensure resource IDs are up to date.
 - Test to ensure add-to-home works.
 - Test to ensure shortcuts update when changing the name.
 - Test to ensure shortcuts open the correct connection.
@@ -29,10 +30,10 @@ index 9d54522..f92ba3b 100644
  </menu>
 \ No newline at end of file
 diff --git a/res/values/strings.xml b/res/values/strings.xml
-index 5b42f9b..e16902f 100644
+index e5a5d51..6b7ba20 100644
 --- a/res/values/strings.xml
 +++ b/res/values/strings.xml
-@@ -524,6 +524,7 @@ Your computers appear automatically; you no longer have to forward ports and con
+@@ -526,6 +526,7 @@ Your computers appear automatically; you no longer have to forward ports and con
      <string name="menu_hide_keyboard">Keyboard</string>
      <string name="menu_hide_mouse">Mouse buttons</string>
      <string name="menu_home">Home</string>
@@ -40,62 +41,65 @@ index 5b42f9b..e16902f 100644
      <string name="menu_info">Info</string>
      <string name="menu_no_filter">No filter</string>
      <string name="menu_offline">Only offline devices</string>
-diff --git a/smali/com/realvnc/viewer/android/app/k3.smali b/smali/com/realvnc/viewer/android/app/k3.smali
-index 50ebbe3..81dd67f 100644
---- a/smali/com/realvnc/viewer/android/app/k3.smali
-+++ b/smali/com/realvnc/viewer/android/app/k3.smali
-@@ -2281,6 +2281,10 @@
+diff --git a/smali/com/realvnc/viewer/android/app/g3.smali b/smali/com/realvnc/viewer/android/app/g3.smali
+index 97d906f..e0c929c 100644
+--- a/smali/com/realvnc/viewer/android/app/g3.smali
++++ b/smali/com/realvnc/viewer/android/app/g3.smali
+@@ -2043,6 +2043,10 @@
+     const v0, 0x7f090216
  
-     if-eq v0, v1, :cond_0
- 
-+    const v1, 0x7f090217 # @id/menu_home
+     if-eq p1, v0, :cond_0
++ 
++    const v0, 0x7f090217 # @id/menu_home
 +
-+    if-eq v0, v1, :cond_4
-+
-     invoke-super {p0, p1}, Landroidx/fragment/app/c0;->onOptionsItemSelected(Landroid/view/MenuItem;)Z
++    if-eq p1, v0, :cond_4
  
-     move-result p1
-@@ -2353,9 +2357,65 @@
+     const/4 p1, 0x0
+ 
+@@ -2113,9 +2117,67 @@
+ 
      :cond_3
-     invoke-direct {p0}, Lcom/realvnc/viewer/android/app/k3;->finish()V
- 
+     invoke-direct {p0}, Lcom/realvnc/viewer/android/app/g3;->k1()V
++ 
 +    :cond_4
-+    invoke-direct {p0}, Lcom/realvnc/viewer/android/app/k3;->addToHomeScreen()V
-+
-     return v2
- .end method
++    invoke-direct {p0}, Lcom/realvnc/viewer/android/app/g3;->addToHomeScreen()V
  
+     return v1
+ .end method
++ 
 +.method private addToHomeScreen()V
 +    .locals 5
 +
-+    invoke-virtual {p0}, Landroidx/fragment/app/c0;->getContext()Landroid/content/Context;
++    invoke-virtual {p0}, Lcom/realvnc/viewer/android/app/g3;->A()Lcom/realvnc/viewer/android/app/ExtendedActivity;
 +    move-result-object v1
 +
 +    # note that all shortcuts get rebuilt and enabled/disabled frequently by
-+    # y2.t1 (search disableShortcuts), so this should preferably match that
++    # w2.v1 (search disableShortcuts), so this should preferably match that
 +    # logic
 +
-+    iget-object v2, p0, Lcom/realvnc/viewer/android/app/k3;->b:Ly2/e;
-+    invoke-virtual {v2}, Ly2/e;->E()Ljava/lang/String; # connection uuid
++    iget-object v2, p0, Lcom/realvnc/viewer/android/app/g3;->Y:Lw2/e;
++    invoke-virtual {v2}, Lw2/e;->E()Ljava/lang/String; # connection uuid
 +    move-result-object v2
 +
 +    new-instance v0, Landroid/content/pm/ShortcutInfo$Builder;
 +    invoke-direct {v0, v1, v2}, Landroid/content/pm/ShortcutInfo$Builder;-><init>(Landroid/content/Context;Ljava/lang/String;)V
 +
-+    iget-object v2, p0, Lcom/realvnc/viewer/android/app/k3;->b:Ly2/e;
-+    invoke-virtual {v2}, Ly2/e;->A()Ljava/lang/String; # name or url
++    iget-object v2, p0, Lcom/realvnc/viewer/android/app/g3;->Y:Lw2/e;
++    invoke-virtual {v2}, Lw2/e;->A()Ljava/lang/String; # name or url
 +    move-result-object v2
 +    invoke-virtual {v0, v2}, Landroid/content/pm/ShortcutInfo$Builder;->setShortLabel(Ljava/lang/CharSequence;)Landroid/content/pm/ShortcutInfo$Builder;
 +    move-result-object v0
 +
-+    const v2, 0x7f080124 # @drawable/preview_thumb_list
++    const v2, 0x7f08016e # @drawable/preview_thumb_list
 +    invoke-static {v1, v2}, Landroid/graphics/drawable/Icon;->createWithResource(Landroid/content/Context;I)Landroid/graphics/drawable/Icon;
 +    move-result-object v2
 +    invoke-virtual {v0, v2}, Landroid/content/pm/ShortcutInfo$Builder;->setIcon(Landroid/graphics/drawable/Icon;)Landroid/content/pm/ShortcutInfo$Builder;
 +    move-result-object v0
 +
-+    iget-object v2, p0, Lcom/realvnc/viewer/android/app/k3;->b:Ly2/e;
-+    invoke-virtual {v2}, Ly2/e;->B()Landroid/net/Uri; # content://com.realvnc.viewer.android.data.AddressBook/entries/UUID
++    iget-object v2, p0, Lcom/realvnc/viewer/android/app/g3;->Y:Lw2/e;
++    invoke-virtual {v2}, Lw2/e;->E()Ljava/lang/String;
++    move-result-object v2
++    invoke-static {v2}, Lw2/e;->C(Ljava/lang/String;)Landroid/net/Uri; # content://com.realvnc.viewer.android.data.AddressBook/entries/UUID
 +    move-result-object v2
 +    const/4 v3, 0x1 # is a shortcut
 +    const/4 v4, 0x1 # shortcut is pinned
@@ -117,7 +121,6 @@ index 50ebbe3..81dd67f 100644
 +
 +    return-void
 +.end method
-+
- .method public final onResume()V
-     .locals 1
  
+ .method public final p(Ljava/lang/String;)V
+     .locals 0

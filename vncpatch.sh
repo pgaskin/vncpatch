@@ -1,9 +1,9 @@
 #!/bin/sh
 set -eu
 
-apk_default_name="com.realvnc.viewer.android_4.8.0.52006.apk"
-apk_default_url="https://help.realvnc.com/hc/en-us/article_attachments/16743785141789"
-apk_default_sha="6888d49ec0de11d69a2c2837b693e9d2fcb364a4a04e85ac8ec0c4c253c7c761"
+apk_default_name="com.realvnc.viewer.android_4.9.1.60165.apk"
+apk_default_url="https://help.realvnc.com/hc/article_attachments/20365005154717"
+apk_default_sha="2e1eb508b374094fab8091fd5bb96f19c64d8648ed0c46eaaaab504df740c691"
 
 nosave=""
 java="java"

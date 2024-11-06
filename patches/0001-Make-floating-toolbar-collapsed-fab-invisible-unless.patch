@@ -1,4 +1,4 @@
-From be102324e373a64014629702ca1e6a25effaa1e9 Mon Sep 17 00:00:00 2001
+From 0394e05bb9c9966916e3f47b771c186cd2c69455 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 18:05:07 -0400
 Subject: [PATCH 1/7] Make floating toolbar collapsed fab invisible unless
@@ -8,25 +8,25 @@ Updating:
 - Find the obsfucated file with the setAlpha for the FAB (try: ag '0x3f000000' -C15 | ag setAlpha).
 - Test to ensure that the FAB behaves correctly.
 
-diff --git a/smali/a3/i.smali b/smali/a3/i.smali
-index 7f927a7..82b6836 100644
---- a/smali/a3/i.smali
-+++ b/smali/a3/i.smali
-@@ -654,7 +654,7 @@
+diff --git a/smali/y2/h.smali b/smali/y2/h.smali
+index 634058a..263f22b 100644
+--- a/smali/y2/h.smali
++++ b/smali/y2/h.smali
+@@ -652,7 +652,7 @@
  
-     iget-boolean v3, p0, La3/i;->v:Z
+     iget-boolean v3, p0, Ly2/h;->u:Z
  
 -    const/high16 v5, 0x3f800000    # 1.0f
 +    const/high16 v5, 0x00000000    # 0.0f
  
      if-eq v0, v3, :cond_2
  
-@@ -678,7 +678,7 @@
+@@ -676,7 +676,7 @@
  
      if-eqz v0, :cond_1
  
 -    const/high16 v6, 0x3f000000    # 0.5f
-+    const/high16 v6, 0x3e800000    # 0.25f
++    const/high16 v6, 0x00000000    # 0.0f
  
      goto :goto_0
  

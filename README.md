@@ -1,7 +1,7 @@
 # vncpatch
 Patches the RealVNC 4.x Android app to fix bugs and improve usability.
 
-Currently supports VNC Viewer 4.8.0.52006 (February 2024).
+Currently supports VNC Viewer 4.9.1.60165 (May 2024).
 
 For VNC Viewer 3.x, see [here](https://gist.github.com/pgaskin/fe3bd93d851f5ac63e40f9fb9cdf264a) for a patch to fix the double-backspace bug.
 

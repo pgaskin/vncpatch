@@ -1,4 +1,4 @@
-From 7b5e3366eabccdfacacabcdf55d23e6607777652 Mon Sep 17 00:00:00 2001
+From 911e6b35d12397a741d57094d8235d58b7e1e339 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 19:21:47 -0400
 Subject: [PATCH 6/7] Rename package
@@ -11,7 +11,7 @@ Updating:
   Mostly just provider authorities, content URI names, and intents.
 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index 5360ade..202bed5 100644
+index 21af7a9..372d169 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
 @@ -1,4 +1,4 @@
@@ -20,31 +20,36 @@ index 5360ade..202bed5 100644
      <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true"/>
      <uses-permission android:name="android.permission.INTERNET"/>
      <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
-@@ -40,12 +40,12 @@
-     <uses-feature android:name="android.hardware.usb.host" android:required="false"/>
-     <uses-feature android:name="android.hardware.nfc" android:required="false"/>
-     <application android:allowBackup="false" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:dataExtractionRules="@xml/data_extraction_rules" android:extractNativeLibs="true" android:fullBackupContent="@xml/backupscheme" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:name="com.realvnc.viewer.android.app.Application" android:resizeableActivity="false" android:supportsRtl="true" android:uiOptions="none">
+@@ -19,10 +19,10 @@
+         </intent>
+     </queries>
+     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+-    <permission android:name="com.realvnc.viewer.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature"/>
+-    <uses-permission android:name="com.realvnc.viewer.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
++    <permission android:name="com.realvnc.viewer.android.patched.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature"/>
++    <uses-permission android:name="com.realvnc.viewer.android.patched.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+     <application android:allowBackup="false" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:dataExtractionRules="@xml/data_extraction_rules" android:extractNativeLibs="true" android:fullBackupContent="@xml/backupscheme" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:name="com.realvnc.viewer.android.app.Application" android:resizeableActivity="false" android:uiOptions="none">
 -        <provider android:authorities="com.realvnc.viewer.android.data.AddressBook" android:exported="false" android:name="com.realvnc.viewer.android.model.AddressBookProvider"/>
 +        <provider android:authorities="com.realvnc.viewer.android.patched.data.AddressBook" android:exported="false" android:name="com.realvnc.viewer.android.model.AddressBookProvider"/>
          <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-2734742209554862~2205718440"/>
          <meta-data android:name="android.content.APP_RESTRICTIONS" android:resource="@xml/app_restrictions"/>
          <activity android:alwaysRetainTaskState="true" android:exported="true" android:label="@string/app_name" android:launchMode="singleTop" android:name="com.realvnc.viewer.android.app.ConnectionChooserActivity" android:theme="@style/ThemeViewerFullscreen" android:windowSoftInputMode="adjustResize|stateUnchanged">
+@@ -31,7 +31,7 @@
+                 <category android:name="android.intent.category.LAUNCHER"/>
+             </intent-filter>
              <intent-filter>
 -                <action android:name="com.realvnc.viewer.android.CONNECTIONS"/>
 +                <action android:name="com.realvnc.viewer.android.patched.CONNECTIONS"/>
                  <category android:name="android.intent.category.DEFAULT"/>
              </intent-filter>
              <intent-filter>
-@@ -55,7 +55,7 @@
+@@ -43,12 +43,12 @@
              <intent-filter>
                  <action android:name="android.intent.action.VIEW"/>
                  <category android:name="android.intent.category.DEFAULT"/>
 -                <data android:scheme="com.realvnc.viewer.android"/>
 +                <data android:scheme="com.realvnc.viewer.android.patched"/>
              </intent-filter>
-         </activity>
-         <activity android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" android:exported="true" android:name="com.microsoft.identity.client.BrowserTabActivity">
-@@ -68,7 +68,7 @@
          </activity>
          <activity android:exported="true" android:launchMode="singleInstance" android:name="com.realvnc.viewer.android.app.DesktopActivity" android:taskAffinity="" android:theme="@style/ThemeViewerFullscreen" android:windowSoftInputMode="adjustResize|stateUnchanged">
              <intent-filter>
@@ -53,7 +58,7 @@ index 5360ade..202bed5 100644
                  <category android:name="android.intent.category.DEFAULT"/>
                  <data android:mimeType="vnd.android.cursor.item/vnd.realvnc.entry"/>
              </intent-filter>
-@@ -79,7 +79,7 @@
+@@ -59,7 +59,7 @@
                  <category android:name="android.intent.category.DEFAULT"/>
              </intent-filter>
          </activity>
@@ -62,38 +67,17 @@ index 5360ade..202bed5 100644
              <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths"/>
          </provider>
          <service android:exported="false" android:name="com.realvnc.viewer.android.app.ConnectionService" android:stopWithTask="true"/>
-@@ -88,7 +88,7 @@
-                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+@@ -69,7 +69,7 @@
              </intent-filter>
          </receiver>
--        <provider android:authorities="com.realvnc.viewer.android.FlurryContentProvider" android:exported="false" android:name="com.flurry.android.agent.FlurryContentProvider"/>
-+        <provider android:authorities="com.realvnc.viewer.android.patched.FlurryContentProvider" android:exported="false" android:name="com.flurry.android.agent.FlurryContentProvider"/>
-         <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" android:exported="false" android:launchMode="singleTask" android:name="com.microsoft.identity.common.internal.providers.oauth2.AuthorizationActivity"/>
-         <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" android:exported="false" android:launchMode="standard" android:name="com.microsoft.identity.common.internal.providers.oauth2.CurrentTaskAuthorizationActivity"/>
-         <activity android:exported="false" android:launchMode="standard" android:name="com.microsoft.identity.client.helper.BrokerHelperActivity"/>
-@@ -96,7 +96,7 @@
-         <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize" android:name="com.microsoft.identity.common.internal.broker.BrokerActivity"/>
-         <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize" android:name="com.microsoft.identity.common.internal.broker.InstallCertActivityLauncher" android:theme="@style/Theme.AppCompat.Light"/>
          <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
 -        <provider android:authorities="com.realvnc.viewer.android.androidx-startup" android:exported="false" android:name="androidx.startup.InitializationProvider">
 +        <provider android:authorities="com.realvnc.viewer.android.patched.androidx-startup" android:exported="false" android:name="androidx.startup.InitializationProvider">
              <meta-data android:name="androidx.emoji2.text.EmojiCompatInitializer" android:value="androidx.startup"/>
              <meta-data android:name="androidx.lifecycle.ProcessLifecycleInitializer" android:value="androidx.startup"/>
              <meta-data android:name="androidx.profileinstaller.ProfileInstallerInitializer" android:value="androidx.startup"/>
-diff --git a/assets/help/support.html b/assets/help/support.html
-index 05b7be2..39f6793 100644
---- a/assets/help/support.html
-+++ b/assets/help/support.html
-@@ -19,6 +19,6 @@
- 		<p class="heading1-top">Accessing logs</p>
- 		<p><i>RealVNC Viewer</i> can save logs. Logs can help self-diagnose an issue, or they can be emailed to Technical Support.</p>
- 		<p>You must first enable <b>Logging</b> under <b>Settings > Connection information</b>. You may then need to reproduce your issue before it is logged.</p>
--		<p>To view your logs, connect your device to your computer and access its files in the usual way. Logs are saved in the device's shared storage, in <code>/Android/data/com.realvnc.viewer.android/files/VNCViewer</code>.
-+		<p>To view your logs, connect your device to your computer and access its files in the usual way. Logs are saved in the device's shared storage, in <code>/Android/data/com.realvnc.viewer.android.patched/files/VNCViewer</code>.
-   </body>
- </html>
 diff --git a/smali/androidx/core/content/FileProvider.smali b/smali/androidx/core/content/FileProvider.smali
-index a85a30d..7112b14 100644
+index 9e9a067..fef8a20 100644
 --- a/smali/androidx/core/content/FileProvider.smali
 +++ b/smali/androidx/core/content/FileProvider.smali
 @@ -168,7 +168,7 @@
@@ -106,10 +90,10 @@ index a85a30d..7112b14 100644
      invoke-static {p0, v0}, Landroidx/core/content/FileProvider;->b(Landroid/content/Context;Ljava/lang/String;)Landroidx/core/content/h;
  
 diff --git a/smali/com/realvnc/viewer/android/app/Application.smali b/smali/com/realvnc/viewer/android/app/Application.smali
-index 15f9ca3..503129c 100644
+index bf3e4d2..d1929e7 100644
 --- a/smali/com/realvnc/viewer/android/app/Application.smali
 +++ b/smali/com/realvnc/viewer/android/app/Application.smali
-@@ -37,7 +37,7 @@
+@@ -35,7 +35,7 @@
  
      new-instance v0, Landroid/content/Intent;
  
@@ -118,7 +102,7 @@ index 15f9ca3..503129c 100644
  
      invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
  
-@@ -339,7 +339,7 @@
+@@ -337,7 +337,7 @@
  
      move-result-object v1
  
@@ -127,7 +111,7 @@ index 15f9ca3..503129c 100644
  
      invoke-virtual {v1, v2}, Ljava/lang/ClassLoader;->loadClass(Ljava/lang/String;)Ljava/lang/Class;
      :try_end_0
-@@ -397,7 +397,7 @@
+@@ -395,7 +395,7 @@
  
      invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
  
@@ -137,20 +121,29 @@ index 15f9ca3..503129c 100644
      invoke-virtual {v4, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
  
 diff --git a/smali/com/realvnc/viewer/android/app/ConnectionChooserActivity.smali b/smali/com/realvnc/viewer/android/app/ConnectionChooserActivity.smali
-index ccb0edc..6ba7fc1 100644
+index 9845171..6769962 100644
 --- a/smali/com/realvnc/viewer/android/app/ConnectionChooserActivity.smali
 +++ b/smali/com/realvnc/viewer/android/app/ConnectionChooserActivity.smali
-@@ -3115,7 +3115,7 @@
+@@ -3625,7 +3625,7 @@
+     invoke-static {v0}, Lw2/j0;->E(Ljava/lang/String;)V
  
-     invoke-super {p0, p1}, Landroidx/fragment/app/FragmentActivity;->onNewIntent(Landroid/content/Intent;)V
- 
+     :cond_2
 -    const-string v0, "com.realvnc.viewer.android://signin"
 +    const-string v0, "com.realvnc.viewer.android.patched://signin"
  
      invoke-virtual {p1}, Landroid/content/Intent;->getDataString()Ljava/lang/String;
  
+@@ -3703,7 +3703,7 @@
+     goto :goto_2
+ 
+     :cond_5
+-    const-string v8, "com.realvnc.viewer.android.CONNECT"
++    const-string v8, "com.realvnc.viewer.android.patched.CONNECT"
+ 
+     invoke-virtual {v7, v8}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
 diff --git a/smali/com/realvnc/viewer/android/app/ConnectionService.smali b/smali/com/realvnc/viewer/android/app/ConnectionService.smali
-index 45747e6..dc7eca8 100644
+index 0037714..7480cd9 100644
 --- a/smali/com/realvnc/viewer/android/app/ConnectionService.smali
 +++ b/smali/com/realvnc/viewer/android/app/ConnectionService.smali
 @@ -316,7 +316,7 @@
@@ -162,7 +155,7 @@ index 45747e6..dc7eca8 100644
  
      invoke-virtual {v3, v4}, Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;
  
-@@ -1360,7 +1360,7 @@
+@@ -1356,7 +1356,7 @@
  
      move-result-object p1
  
@@ -172,10 +165,10 @@ index 45747e6..dc7eca8 100644
      invoke-static {p1, p2}, Landroid/text/TextUtils;->equals(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Z
  
 diff --git a/smali/com/realvnc/viewer/android/app/DesktopActivity.smali b/smali/com/realvnc/viewer/android/app/DesktopActivity.smali
-index ee97373..b2c8392 100644
+index 9e8487e..792209f 100644
 --- a/smali/com/realvnc/viewer/android/app/DesktopActivity.smali
 +++ b/smali/com/realvnc/viewer/android/app/DesktopActivity.smali
-@@ -4584,7 +4584,7 @@
+@@ -4394,7 +4394,7 @@
  
      move-result-object v3
  
@@ -184,7 +177,7 @@ index ee97373..b2c8392 100644
  
      invoke-virtual {p1}, Landroid/content/Intent;->getAction()Ljava/lang/String;
  
-@@ -4627,7 +4627,7 @@
+@@ -4437,7 +4437,7 @@
      goto :goto_2
  
      :cond_2
@@ -193,16 +186,16 @@ index ee97373..b2c8392 100644
  
      invoke-virtual {p1}, Landroid/content/Intent;->getAction()Ljava/lang/String;
  
-diff --git a/smali/com/realvnc/viewer/android/app/k3.smali b/smali/com/realvnc/viewer/android/app/k3.smali
-index 81dd67f..ec6baa3 100644
---- a/smali/com/realvnc/viewer/android/app/k3.smali
-+++ b/smali/com/realvnc/viewer/android/app/k3.smali
-@@ -2393,7 +2393,7 @@
-     move-result-object v0
- 
-     iget-object v2, p0, Lcom/realvnc/viewer/android/app/k3;->b:Ly2/e;
--    invoke-virtual {v2}, Ly2/e;->B()Landroid/net/Uri; # content://com.realvnc.viewer.android.data.AddressBook/entries/UUID
-+    invoke-virtual {v2}, Ly2/e;->B()Landroid/net/Uri; # content://com.realvnc.viewer.android.patched.data.AddressBook/entries/UUID
+diff --git a/smali/com/realvnc/viewer/android/app/g3.smali b/smali/com/realvnc/viewer/android/app/g3.smali
+index e0c929c..4b25397 100644
+--- a/smali/com/realvnc/viewer/android/app/g3.smali
++++ b/smali/com/realvnc/viewer/android/app/g3.smali
+@@ -2156,7 +2156,7 @@
+     iget-object v2, p0, Lcom/realvnc/viewer/android/app/g3;->Y:Lw2/e;
+     invoke-virtual {v2}, Lw2/e;->E()Ljava/lang/String;
+     move-result-object v2
+-    invoke-static {v2}, Lw2/e;->C(Ljava/lang/String;)Landroid/net/Uri; # content://com.realvnc.viewer.android.data.AddressBook/entries/UUID
++    invoke-static {v2}, Lw2/e;->C(Ljava/lang/String;)Landroid/net/Uri; # content://com.realvnc.viewer.android.patched.data.AddressBook/entries/UUID
      move-result-object v2
      const/4 v3, 0x1 # is a shortcut
      const/4 v4, 0x1 # shortcut is pinned
@@ -219,26 +212,10 @@ index e7cf042..97c3e8a 100644
  
      invoke-virtual {v0, v3, v1, v2}, Landroid/content/UriMatcher;->addURI(Ljava/lang/String;Ljava/lang/String;I)V
  
-diff --git a/smali/y2/d1.smali b/smali/y2/d1.smali
-index 3883f57..b28f66d 100644
---- a/smali/y2/d1.smali
-+++ b/smali/y2/d1.smali
-@@ -74,9 +74,9 @@
-     return-void
- 
-     :pswitch_1
--    const-string v0, "/com.realvnc.viewer.android"
-+    const-string v0, "/com.realvnc.viewer.android.patched"
- 
--    const-string v2, "/com.realvnc.viewer.android/.vnc/policy.d"
-+    const-string v2, "/com.realvnc.viewer.android.patched/.vnc/policy.d"
- 
-     invoke-static {}, Landroid/os/Looper;->prepare()V
- 
-diff --git a/smali/y2/e.smali b/smali/y2/e.smali
-index 8e5979d..2a20fd0 100644
---- a/smali/y2/e.smali
-+++ b/smali/y2/e.smali
+diff --git a/smali/w2/e.smali b/smali/w2/e.smali
+index 11b9053..4c07ece 100644
+--- a/smali/w2/e.smali
++++ b/smali/w2/e.smali
 @@ -93,7 +93,7 @@
  
      const/4 v2, 0x1
@@ -257,23 +234,35 @@ index 8e5979d..2a20fd0 100644
  
      invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
  
-diff --git a/smali/y2/i0.smali b/smali/y2/i0.smali
-index ffa9072..5788a9c 100644
---- a/smali/y2/i0.smali
-+++ b/smali/y2/i0.smali
-@@ -100,7 +100,7 @@
+diff --git a/smali/w2/f1.smali b/smali/w2/f1.smali
+index a1ab8ee..f6ed3fe 100644
+--- a/smali/w2/f1.smali
++++ b/smali/w2/f1.smali
+@@ -74,9 +74,9 @@
+     return-void
  
-     move-result-object p1
+     :pswitch_1
+-    const-string v0, "/com.realvnc.viewer.android"
++    const-string v0, "/com.realvnc.viewer.android.patched"
  
--    const-string p3, "com.realvnc.viewer.android://signin"
-+    const-string p3, "com.realvnc.viewer.android.patched://signin"
+-    const-string v2, "/com.realvnc.viewer.android/.vnc/policy.d"
++    const-string v2, "/com.realvnc.viewer.android.patched/.vnc/policy.d"
  
-     filled-new-array {p3}, [Ljava/lang/Object;
+     invoke-static {}, Landroid/os/Looper;->prepare()V
  
-diff --git a/smali/y2/i1.smali b/smali/y2/i1.smali
-index e0ec3c4..a870483 100644
---- a/smali/y2/i1.smali
-+++ b/smali/y2/i1.smali
+@@ -112,7 +112,7 @@
+ 
+     sget v4, Lcom/realvnc/viewer/android/app/Application;->g:I
+ 
+-    const-string v5, "com.realvnc.viewer.android"
++    const-string v5, "com.realvnc.viewer.android.patched"
+ 
+     const/4 v4, 0x0
+ 
+diff --git a/smali/w2/k1.smali b/smali/w2/k1.smali
+index d3695d8..56ca9f0 100644
+--- a/smali/w2/k1.smali
++++ b/smali/w2/k1.smali
 @@ -17,7 +17,7 @@
  
      invoke-direct {v0, v1}, Landroid/content/UriMatcher;-><init>(I)V
@@ -283,10 +272,10 @@ index e0ec3c4..a870483 100644
  
      const-string v2, "entries"
  
-diff --git a/smali/y2/s0.smali b/smali/y2/s0.smali
-index d5f1d28..53a07ff 100644
---- a/smali/y2/s0.smali
-+++ b/smali/y2/s0.smali
+diff --git a/smali/w2/u0.smali b/smali/w2/u0.smali
+index 1ee2415..64a9be7 100644
+--- a/smali/w2/u0.smali
++++ b/smali/w2/u0.smali
 @@ -31,7 +31,7 @@
  
      sget-object v2, Landroidx/security/crypto/EncryptedSharedPreferences$PrefValueEncryptionScheme;->AES256_GCM:Landroidx/security/crypto/EncryptedSharedPreferences$PrefValueEncryptionScheme;
