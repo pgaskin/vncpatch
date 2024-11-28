@@ -1,0 +1,33 @@
+From bd6305351b77f37254fdce53ab224248a6fdf545 Mon Sep 17 00:00:00 2001
+From: Patrick Gaskin <patrick@pgaskin.net>
+Date: Wed, 27 Nov 2024 18:57:06 -0500
+Subject: [PATCH 8/8] Fix taps frequently getting ignored on high-resolution
+ touchscreens
+
+On some devices (e.g., the Pixel 9 Pro), the max number of ACTION_MOVE
+events between ACTION_DOWN and ACTION_UP for what should be recognized
+as a tap is greater than RealVNC's hardcoded value of 10.
+
+Based on experimental testing on the P9P, P8, and various Motorola
+devices, 18 is a reasonable value for this.
+
+To fix this properly, the threshold should be based on a score of the
+motion events rather than the count.
+
+Updating:
+- Find the 0xa constant used for an if-le instruction in the file
+  containing a log for TouchManager.
+
+diff --git a/smali/z2/q.smali b/smali/z2/q.smali
+index cd21372..267ee61 100644
+--- a/smali/z2/q.smali
++++ b/smali/z2/q.smali
+@@ -654,7 +654,7 @@
+ 
+     const/4 v2, 0x0
+ 
+-    const/16 v3, 0xa
++    const/16 v3, 0x12
+ 
+     if-lez v0, :cond_3
+ 
