@@ -1,7 +1,7 @@
-From 0b56ea5d98d8833fa604025ed4537e04be077971 Mon Sep 17 00:00:00 2001
+From 63f4409b5e43bad7c41ed3df4037af8325fd7854 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 20:53:54 -0400
-Subject: [PATCH 7/8] Support dark theme for connection list
+Subject: [PATCH 7/8] Support dark theme
 
 WIP. Not all colors have been overridden, and some parts are ugly.
 
@@ -112,10 +112,10 @@ index 4ca6bab..5565bf3 100644
          <androidx.cardview.widget.CardView android:id="@id/progress_cancel_cardview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" card_view:cardBackgroundColor="@color/vnc_red" card_view:cardCornerRadius="4.0dip" card_view:cardElevation="3.0dip" xmlns:card_view="http://schemas.android.com/apk/res-auto">
 diff --git a/res/values-night/colors.xml b/res/values-night/colors.xml
 new file mode 100644
-index 0000000..9d16a09
+index 0000000..ed4e26c
 --- /dev/null
 +++ b/res/values-night/colors.xml
-@@ -0,0 +1,21 @@
+@@ -0,0 +1,28 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<resources>
 +    <!-- e.g., main toolbars, icons -->
@@ -136,6 +136,13 @@ index 0000000..9d16a09
 +    <!-- e.g., progress overlay -->
 +    <color name="progress_overlay_bg">#ff000002</color>
 +    <color name="progress_overlay_fg">#ffeeeeee</color>
++    <!-- e.g., extension keyboard (TODO: pressed key background is hardcoded in KeyboaRdKey)-->
++    <color name="keyboard_black">#ffdcdfe1</color>
++    <color name="keyboard_dark_grey">#ffbbbbbb</color>
++    <color name="keyboard_light_background">#ff000000</color>
++    <!-- e.g., extension keyboard info bar -->
++    <color name="keyboard_light_grey">#ffaaaaaa</color>
++    <color name="keyboard_info_color">#aa000000</color>
 +</resources>
 diff --git a/res/values-night/styles.xml b/res/values-night/styles.xml
 index 2dfc60a..d995896 100644
