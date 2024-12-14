@@ -1,7 +1,7 @@
-From 911e6b35d12397a741d57094d8235d58b7e1e339 Mon Sep 17 00:00:00 2001
+From 5c3526dbebfb0dba521fd88081c744b0c1f4a977 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 19:21:47 -0400
-Subject: [PATCH 6/9] Rename package
+Subject: [PATCH 1/7] Rename package
 
 So it's easier to test alongside the original one, and so the
 original one can be used if needed for SSO.
@@ -186,19 +186,6 @@ index 9e8487e..792209f 100644
  
      invoke-virtual {p1}, Landroid/content/Intent;->getAction()Ljava/lang/String;
  
-diff --git a/smali/com/realvnc/viewer/android/app/g3.smali b/smali/com/realvnc/viewer/android/app/g3.smali
-index e0c929c..4b25397 100644
---- a/smali/com/realvnc/viewer/android/app/g3.smali
-+++ b/smali/com/realvnc/viewer/android/app/g3.smali
-@@ -2156,7 +2156,7 @@
-     iget-object v2, p0, Lcom/realvnc/viewer/android/app/g3;->Y:Lw2/e;
-     invoke-virtual {v2}, Lw2/e;->E()Ljava/lang/String;
-     move-result-object v2
--    invoke-static {v2}, Lw2/e;->C(Ljava/lang/String;)Landroid/net/Uri; # content://com.realvnc.viewer.android.data.AddressBook/entries/UUID
-+    invoke-static {v2}, Lw2/e;->C(Ljava/lang/String;)Landroid/net/Uri; # content://com.realvnc.viewer.android.patched.data.AddressBook/entries/UUID
-     move-result-object v2
-     const/4 v3, 0x1 # is a shortcut
-     const/4 v4, 0x1 # shortcut is pinned
 diff --git a/smali/com/realvnc/viewer/android/model/AddressBookProvider.smali b/smali/com/realvnc/viewer/android/model/AddressBookProvider.smali
 index e7cf042..97c3e8a 100644
 --- a/smali/com/realvnc/viewer/android/model/AddressBookProvider.smali

@@ -1,7 +1,7 @@
-From 927ff6cf678a6a382d81f345eb57b19274a57292 Mon Sep 17 00:00:00 2001
+From 65e7fe91a9f53686174d6a4c98b9dfbd5bdc354a Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 23:05:33 -0400
-Subject: [PATCH 4/9] Implement key repeat for extension keyboard
+Subject: [PATCH 4/7] Implement key repeat for extension keyboard
 
 Allows keys to be long-pressed (typically 500ms) to start repeating
 them at 75ms. Doesn't apply to modifier keys.
@@ -16,7 +16,7 @@ GestureListener').
 - Test to ensure key repeat works for non-modifier keys and doesn't for modifiers.
 
 diff --git a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
-index a431ccf..6bf8883 100644
+index 4bf7589..0a82faa 100644
 --- a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 +++ b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 @@ -4,13 +4,13 @@
@@ -35,7 +35,7 @@ index a431ccf..6bf8883 100644
  
  .field private e:Landroid/view/GestureDetector;
  
-@@ -608,6 +608,8 @@
+@@ -613,6 +613,8 @@
  
      invoke-virtual {v0, v1, v2, v3}, Lx/e;->h(Ljava/lang/Runnable;J)V
  
@@ -44,7 +44,7 @@ index a431ccf..6bf8883 100644
      iget-object v0, p0, Lcom/realvnc/viewer/android/ui/KeyboardKey;->e:Landroid/view/GestureDetector;
  
      invoke-virtual {v0, p1}, Landroid/view/GestureDetector;->onTouchEvent(Landroid/view/MotionEvent;)Z
-@@ -616,3 +618,19 @@
+@@ -621,3 +623,19 @@
  
      return p1
  .end method

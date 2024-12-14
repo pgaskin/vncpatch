@@ -1,7 +1,7 @@
-From bce75577cf72285580f6aba02b10040467853c76 Mon Sep 17 00:00:00 2001
+From ecca1653afcd43e71a807403b74f4a31cc233fef Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 18:40:58 -0400
-Subject: [PATCH 3/9] Add pin-to-home button to connection details page
+Subject: [PATCH 5/7] Add pin-to-home button to connection details page
 
 The dynamic app shortcuts list only shows the same 4 connections, and
 it's not even frequency-based due to the way it gets rebuilt, so it's
@@ -42,7 +42,7 @@ index e5a5d51..6b7ba20 100644
      <string name="menu_no_filter">No filter</string>
      <string name="menu_offline">Only offline devices</string>
 diff --git a/smali/com/realvnc/viewer/android/app/g3.smali b/smali/com/realvnc/viewer/android/app/g3.smali
-index 97d906f..e0c929c 100644
+index 97d906f..4b25397 100644
 --- a/smali/com/realvnc/viewer/android/app/g3.smali
 +++ b/smali/com/realvnc/viewer/android/app/g3.smali
 @@ -2043,6 +2043,10 @@
@@ -99,7 +99,7 @@ index 97d906f..e0c929c 100644
 +    iget-object v2, p0, Lcom/realvnc/viewer/android/app/g3;->Y:Lw2/e;
 +    invoke-virtual {v2}, Lw2/e;->E()Ljava/lang/String;
 +    move-result-object v2
-+    invoke-static {v2}, Lw2/e;->C(Ljava/lang/String;)Landroid/net/Uri; # content://com.realvnc.viewer.android.data.AddressBook/entries/UUID
++    invoke-static {v2}, Lw2/e;->C(Ljava/lang/String;)Landroid/net/Uri; # content://com.realvnc.viewer.android.patched.data.AddressBook/entries/UUID
 +    move-result-object v2
 +    const/4 v3, 0x1 # is a shortcut
 +    const/4 v4, 0x1 # shortcut is pinned

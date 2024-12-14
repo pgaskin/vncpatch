@@ -1,7 +1,7 @@
-From fad70f5039f3e0693bdfc42444ac3044a1736696 Mon Sep 17 00:00:00 2001
+From b3af7aeb50d9021432d19e052ed8ed1c20a46f27 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 23:05:41 -0400
-Subject: [PATCH 5/9] Fix rapidly pressing extension keyboard keys only sending
+Subject: [PATCH 3/7] Fix rapidly pressing extension keyboard keys only sending
  half
 
 The existing logic handles double-taps separately. It used to send a
@@ -13,7 +13,7 @@ Updating:
 - Test to ensure rapidly pressing extension keys works correctly.
 
 diff --git a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
-index 6bf8883..0a82faa 100644
+index a431ccf..4bf7589 100644
 --- a/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 +++ b/smali/com/realvnc/viewer/android/ui/KeyboardKey.smali
 @@ -183,6 +183,11 @@

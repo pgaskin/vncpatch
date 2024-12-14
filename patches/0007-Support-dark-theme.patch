@@ -1,7 +1,7 @@
-From 63f4409b5e43bad7c41ed3df4037af8325fd7854 Mon Sep 17 00:00:00 2001
+From 0ecf717819c628ce13f1439cb0d21317bfea93fa Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 20:53:54 -0400
-Subject: [PATCH 7/9] Support dark theme
+Subject: [PATCH 7/7] Support dark theme
 
 WIP. Not all colors have been overridden, and some parts are ugly.
 
@@ -19,7 +19,7 @@ index 372d169..e29fd26 100644
                  <action android:name="android.intent.action.MAIN"/>
                  <category android:name="android.intent.category.LAUNCHER"/>
 diff --git a/res/layout/activity_desktop.xml b/res/layout/activity_desktop.xml
-index 8087a93..a76f641 100644
+index be8ad89..3ddb52d 100644
 --- a/res/layout/activity_desktop.xml
 +++ b/res/layout/activity_desktop.xml
 @@ -1,5 +1,5 @@
@@ -29,7 +29,7 @@ index 8087a93..a76f641 100644
    xmlns:android="http://schemas.android.com/apk/res/android">
      <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
          <com.realvnc.viewer.android.ui.input.CapturingEditText android:id="@id/hidden_input_view" android:focusable="true" android:layout_width="1.0dip" android:layout_height="1.0dip" android:text="" android:singleLine="false" android:imeOptions="actionNone|flagNoExtractUi" />
-@@ -18,7 +18,7 @@
+@@ -29,7 +29,7 @@
              <include layout="@layout/fragment_coach_marks_tutorial" />
              <include layout="@layout/fullscreen_toolbar" />
          </com.realvnc.viewer.android.ui.input.InterceptingRelativeLayout>
@@ -180,18 +180,20 @@ index 2dfc60a..d995896 100644
 +    </style>
  </resources>
 diff --git a/res/values/colors.xml b/res/values/colors.xml
-index a9090b1..b024806 100644
+index a35406b..b024806 100644
 --- a/res/values/colors.xml
 +++ b/res/values/colors.xml
-@@ -91,6 +91,8 @@
+@@ -91,7 +91,9 @@
      <color name="foreground_material_dark">@android:color/white</color>
      <color name="foreground_material_light">@android:color/black</color>
      <color name="fragment_background">#ffeeeeee</color>
+-    <color name="fullscreen_toolbar_bg">#ff000000</color>
 +    <color name="connection_item_background_list">#ffffffff</color>
 +    <color name="connection_item_background_grid">#aaffffff</color>
-     <color name="fullscreen_toolbar_bg">#aaffffff</color>
++    <color name="fullscreen_toolbar_bg">#aaffffff</color>
      <color name="fullscreen_toolbar_blue">#ff0036d8</color>
      <color name="highlighted_text_material_dark">#6680cbc4</color>
+     <color name="highlighted_text_material_light">#66009688</color>
 @@ -382,4 +384,6 @@
      <color name="warning_dark_red">#ffcf0c00</color>
      <color name="warning_light_orange">#ffe6a000</color>
@@ -215,7 +217,7 @@ index 299fa6d..234b677 100644
      <public type="color" name="m3_dynamic_dark_default_color_secondary_text" id="0x7f06009c" />
      <public type="color" name="m3_dynamic_dark_highlighted_text" id="0x7f06009d" />
 diff --git a/res/values/styles.xml b/res/values/styles.xml
-index eb01005..dbc99e6 100644
+index eb01005..cb279c2 100644
 --- a/res/values/styles.xml
 +++ b/res/values/styles.xml
 @@ -4497,6 +4497,7 @@
@@ -235,7 +237,7 @@ index eb01005..dbc99e6 100644
 +        <item name="colorAccent">@color/colour_accent</item>
 +        <item name="colorControlNormal">@color/colour_control_normal</item>
 +        <item name="colorPrimary">@color/colour_primary</item>
-+        <item name="colorPrimaryDark">@color/colour_primary_dark</item>
++        <item name="colorPrimaryDark">@android:color/black</item>
 +        <item name="preferenceTheme">@style/CustomPreferenceThemeOverlay</item>
 +    </style>
 +    <style name="ThemeConnectionChooser" parent="@style/Theme.AppCompat.DayNight.NoActionBar">
