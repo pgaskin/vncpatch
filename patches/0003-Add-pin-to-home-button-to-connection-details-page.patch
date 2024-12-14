@@ -1,7 +1,7 @@
 From bce75577cf72285580f6aba02b10040467853c76 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 18:40:58 -0400
-Subject: [PATCH 3/8] Add pin-to-home button to connection details page
+Subject: [PATCH 3/9] Add pin-to-home button to connection details page
 
 The dynamic app shortcuts list only shows the same 4 connections, and
 it's not even frequency-based due to the way it gets rebuilt, so it's

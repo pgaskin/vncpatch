@@ -1,7 +1,7 @@
 From de9df3ddf87bb8d9b4f941ecd7cd47247a50e8d8 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 27 Nov 2024 18:57:06 -0500
-Subject: [PATCH 8/8] Fix taps frequently getting ignored on high-resolution
+Subject: [PATCH 8/9] Fix taps frequently getting ignored on high-resolution
  touchscreens
 
 On some devices (e.g., the Pixel 9 Pro), the max number of ACTION_MOVE

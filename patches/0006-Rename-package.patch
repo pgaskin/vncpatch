@@ -1,7 +1,7 @@
 From 911e6b35d12397a741d57094d8235d58b7e1e339 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 19:21:47 -0400
-Subject: [PATCH 6/8] Rename package
+Subject: [PATCH 6/9] Rename package
 
 So it's easier to test alongside the original one, and so the
 original one can be used if needed for SSO.

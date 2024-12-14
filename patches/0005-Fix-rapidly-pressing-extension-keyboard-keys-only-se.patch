@@ -1,7 +1,7 @@
 From fad70f5039f3e0693bdfc42444ac3044a1736696 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 23:05:41 -0400
-Subject: [PATCH 5/8] Fix rapidly pressing extension keyboard keys only sending
+Subject: [PATCH 5/9] Fix rapidly pressing extension keyboard keys only sending
  half
 
 The existing logic handles double-taps separately. It used to send a
