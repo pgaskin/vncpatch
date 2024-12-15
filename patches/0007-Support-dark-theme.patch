@@ -1,4 +1,4 @@
-From d0d3b8cf9e0bfebe9d8bbefcef79a0358a785485 Mon Sep 17 00:00:00 2001
+From bb1518734dfad01f72b9ab1c95f8a4597c08506d Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 20:53:54 -0400
 Subject: [PATCH 7/7] Support dark theme
@@ -112,10 +112,10 @@ index 4ca6bab..5565bf3 100644
          <androidx.cardview.widget.CardView android:id="@id/progress_cancel_cardview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" card_view:cardBackgroundColor="@color/vnc_red" card_view:cardCornerRadius="4.0dip" card_view:cardElevation="3.0dip" xmlns:card_view="http://schemas.android.com/apk/res-auto">
 diff --git a/res/values-night/colors.xml b/res/values-night/colors.xml
 new file mode 100644
-index 0000000..ed4e26c
+index 0000000..8b6fec2
 --- /dev/null
 +++ b/res/values-night/colors.xml
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,24 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<resources>
 +    <!-- e.g., main toolbars, icons -->
@@ -129,10 +129,6 @@ index 0000000..ed4e26c
 +    <color name="connection_item_background_grid">#aa202020</color>
 +    <!-- e.g., connection info list item background -->
 +    <color name="cardview_dark_background">#ff202020</color>
-+    <!-- e.g., desktop view toolbar -->
-+    <color name="fullscreen_toolbar_bg">#aa222222</color>
-+    <color name="fullscreen_toolbar_blue">#ffc2d1ff</color>
-+    <color name="branded_grey">#ff36455c</color>
 +    <!-- e.g., progress overlay -->
 +    <color name="progress_overlay_bg">#ff000002</color>
 +    <color name="progress_overlay_fg">#ffeeeeee</color>
@@ -180,20 +176,18 @@ index 2dfc60a..d995896 100644
 +    </style>
  </resources>
 diff --git a/res/values/colors.xml b/res/values/colors.xml
-index a35406b..b024806 100644
+index a35406b..4536f04 100644
 --- a/res/values/colors.xml
 +++ b/res/values/colors.xml
-@@ -91,7 +91,9 @@
+@@ -91,6 +91,8 @@
      <color name="foreground_material_dark">@android:color/white</color>
      <color name="foreground_material_light">@android:color/black</color>
      <color name="fragment_background">#ffeeeeee</color>
--    <color name="fullscreen_toolbar_bg">#ff000000</color>
 +    <color name="connection_item_background_list">#ffffffff</color>
 +    <color name="connection_item_background_grid">#aaffffff</color>
-+    <color name="fullscreen_toolbar_bg">#aaffffff</color>
+     <color name="fullscreen_toolbar_bg">#ff000000</color>
      <color name="fullscreen_toolbar_blue">#ff0036d8</color>
      <color name="highlighted_text_material_dark">#6680cbc4</color>
-     <color name="highlighted_text_material_light">#66009688</color>
 @@ -382,4 +384,6 @@
      <color name="warning_dark_red">#ffcf0c00</color>
      <color name="warning_light_orange">#ffe6a000</color>

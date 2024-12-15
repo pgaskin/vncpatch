@@ -1,4 +1,4 @@
-From 35896d6169c93771a7a7bdfa9a897f0413e9d01c Mon Sep 17 00:00:00 2001
+From cfb533287cf6cc0d79369065807c4675f8d41e52 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 19:21:47 -0400
 Subject: [PATCH 1/7] Rename package

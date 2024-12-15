@@ -1,4 +1,4 @@
-From 9caca98bc5deef54c801fb4aa751ffe83fd95c00 Mon Sep 17 00:00:00 2001
+From 67bc9d19eefecb96da3983fb7b651714cf9f2d83 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 23:05:33 -0400
 Subject: [PATCH 4/7] Implement key repeat for extension keyboard

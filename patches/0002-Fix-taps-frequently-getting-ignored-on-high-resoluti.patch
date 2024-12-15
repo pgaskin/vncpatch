@@ -1,4 +1,4 @@
-From 006945359ceb2f8699b38252de7523722dd18633 Mon Sep 17 00:00:00 2001
+From f36ee3ed7f764145e2490f218059bad98f241a76 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 27 Nov 2024 18:57:06 -0500
 Subject: [PATCH 2/7] Fix taps frequently getting ignored on high-resolution

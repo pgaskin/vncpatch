@@ -1,4 +1,4 @@
-From 5ee986d566a99a82372f6ea9f338915b91f3295c Mon Sep 17 00:00:00 2001
+From 7befe33222d5898e39ae65521a278ab44893a34b Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sun, 1 Oct 2023 23:05:41 -0400
 Subject: [PATCH 3/7] Fix rapidly pressing extension keyboard keys only sending
