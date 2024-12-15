@@ -1,4 +1,4 @@
-From 0ecf717819c628ce13f1439cb0d21317bfea93fa Mon Sep 17 00:00:00 2001
+From 40051307b5aba2f13f122d0166a434c7f261b450 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 20:53:54 -0400
 Subject: [PATCH 7/7] Support dark theme
