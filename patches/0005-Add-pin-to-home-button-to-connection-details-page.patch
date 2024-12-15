@@ -1,4 +1,4 @@
-From ecca1653afcd43e71a807403b74f4a31cc233fef Mon Sep 17 00:00:00 2001
+From 6eb9453d83c6dbc27d7636febb1958f7936d60ae Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Wed, 17 Apr 2024 18:40:58 -0400
 Subject: [PATCH 5/7] Add pin-to-home button to connection details page

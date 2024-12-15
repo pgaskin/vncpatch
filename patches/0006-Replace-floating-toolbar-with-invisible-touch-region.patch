@@ -1,4 +1,4 @@
-From f0d149a9b53375504cf69cdbd7b5c28a6cf5c1f1 Mon Sep 17 00:00:00 2001
+From 2208ab5b7d529474913dadfafdf656e29e8e1f64 Mon Sep 17 00:00:00 2001
 From: Patrick Gaskin <patrick@pgaskin.net>
 Date: Sat, 14 Dec 2024 14:38:51 -0500
 Subject: [PATCH 6/7] Replace floating toolbar with invisible touch regions
